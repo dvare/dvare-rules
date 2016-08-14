@@ -221,7 +221,7 @@
                     <message>Maven artifacts for ${project.version}</message>
                     <noJekyll>true</noJekyll>
                     <outputDirectory>${project.build.directory}/release</outputDirectory>
-                    <branch>refs/heads/master</branch>
+                    <branch>refs/heads/rules</branch>
                     <includes>
                         <include>**/*</include>
                     </includes>
