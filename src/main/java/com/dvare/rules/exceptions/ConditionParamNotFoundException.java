@@ -24,24 +24,24 @@ THE SOFTWARE.*/
 package com.dvare.rules.exceptions;
 
 
-public class IllegalRuleException extends Exception {
-    public IllegalRuleException() {
+public class ConditionParamNotFoundException extends IllegalRuleException {
+    public ConditionParamNotFoundException() {
     }
 
-    public IllegalRuleException(String message) {
+    public ConditionParamNotFoundException(String message) {
         super(message);
     }
 
-    public IllegalRuleException(Throwable cause) {
+    public ConditionParamNotFoundException(Throwable cause) {
         super(cause);
     }
 
-    public IllegalRuleException(String message, Throwable cause) {
+    public ConditionParamNotFoundException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public IllegalRuleException(String message, Throwable cause,
-                                boolean enableSuppression, boolean writableStackTrace) {
+    public ConditionParamNotFoundException(String message, Throwable cause,
+                                           boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }

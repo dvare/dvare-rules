@@ -5,21 +5,20 @@ import com.dvare.binding.model.TypeBinding;
 import com.dvare.config.RuleConfiguration;
 import com.dvare.exceptions.parser.ExpressionParseException;
 import com.dvare.rules.annotations.*;
-import com.dvare.rules.ruleengine.TextRuleEngine;
+import com.dvare.rules.ruleengine.DVAREEngine;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 
 @Rule(name = "fileRule", priority = 0)
 public class FileRuleTest {
 
+    private File rule;
     private Integer age;
 
-    @Condition
-    public boolean condition() {
-        RuleConfiguration configuration = new RuleConfiguration();
-        TextRuleEngine textRuleEngine = new TextRuleEngine(configuration);
+    @Condition(type = ConditionType.DVARE)
+    public boolean condition(DVAREEngine dvareEngine) {
+
 
         TypeBinding typeBinding = new TypeBinding();
         typeBinding.addTypes("age", "IntegerType");
@@ -29,11 +28,10 @@ public class FileRuleTest {
 
         boolean result = false;
 
-        URL url = this.getClass().getClassLoader().getResource("rules/age_rule.dvare");
-        File rule = new File(url.getFile());
+
 
         try {
-            result = textRuleEngine.evaluate(rule, typeBinding, dataRow);
+            result = dvareEngine.evaluate(rule, typeBinding, dataRow);
         } catch (ExpressionParseException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -69,5 +67,13 @@ public class FileRuleTest {
 
     public void setAge(Integer age) {
         this.age = age;
+    }
+
+    public File getRule() {
+        return rule;
+    }
+
+    public void setRule(File rule) {
+        this.rule = rule;
     }
 }

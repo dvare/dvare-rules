@@ -5,18 +5,17 @@ import com.dvare.binding.model.TypeBinding;
 import com.dvare.config.RuleConfiguration;
 import com.dvare.exceptions.parser.ExpressionParseException;
 import com.dvare.rules.annotations.*;
-import com.dvare.rules.ruleengine.TextRuleEngine;
+import com.dvare.rules.ruleengine.DVAREEngine;
 
 @Rule(name = "textrule", priority = 0)
 public class TextRuleTest {
 
-
+    private String rule;
     private Integer age;
 
-    @Condition
-    public boolean condition() {
-        RuleConfiguration configuration = new RuleConfiguration();
-        TextRuleEngine textRuleEngine = new TextRuleEngine(configuration);
+    @Condition(type = ConditionType.DVARE)
+    public boolean condition(DVAREEngine dvareEngine) {
+
 
         TypeBinding typeBinding = new TypeBinding();
         typeBinding.addTypes("age", "IntegerType");
@@ -26,10 +25,8 @@ public class TextRuleTest {
 
         boolean result = false;
 
-        String rule = "age > 20 And age < 30";
-
         try {
-            result = textRuleEngine.evaluate(rule, typeBinding, dataRow);
+            result = dvareEngine.evaluate(rule, typeBinding, dataRow);
         } catch (ExpressionParseException e) {
             e.printStackTrace();
         }
@@ -64,5 +61,13 @@ public class TextRuleTest {
 
     public void setAge(Integer age) {
         this.age = age;
+    }
+
+    public String getRule() {
+        return rule;
+    }
+
+    public void setRule(String rule) {
+        this.rule = rule;
     }
 }

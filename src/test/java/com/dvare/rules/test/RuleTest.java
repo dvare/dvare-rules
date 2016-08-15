@@ -8,8 +8,8 @@ public class RuleTest {
     private Integer age;
 
 
-    @Condition
-    public boolean condition() {
+    @Condition(type = ConditionType.CODE)
+    public Boolean condition() {
 
         return age > 20 && age < 30;
     }

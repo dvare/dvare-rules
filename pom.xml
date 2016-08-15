@@ -44,7 +44,7 @@
         </repository>
         <repository>
             <id>davre</id>
-            <url>https://raw.githubusercontent.com/dvare/release/master/</url>
+            <url>https://raw.githubusercontent.com/dvare/release/core/</url>
         </repository>
         <repository>
             <id>oss-sonatype</id>

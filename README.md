@@ -1,4 +1,4 @@
-## What is DVARE RULES [![Build Status](https://travis-ci.org/dvare/rules.svg?branch=master)](https://travis-ci.org/dvare/dvare)
+## What is DVARE RULES [![Build Status](https://travis-ci.org/dvare/rules.svg?branch=master)](https://travis-ci.org/dvare/rules)
 DVARE Rules is rule engine built on dvare  
 [https://github.com/dvare/rules](https://github.com/dvare/rules)
 
