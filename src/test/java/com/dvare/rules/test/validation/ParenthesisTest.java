@@ -21,56 +21,49 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 
-package com.dvare.rules.ruleengine;
+package com.dvare.rules.test.validation;
 
 
 import com.dvare.binding.rule.Rule;
 import com.dvare.config.RuleConfiguration;
+import com.dvare.evaluator.RuleEvaluator;
 import com.dvare.exceptions.interpreter.InterpretException;
 import com.dvare.exceptions.parser.ExpressionParseException;
 import com.dvare.expression.Expression;
+import com.dvare.rules.test.validation.dataobjects.Parenthesis;
+import junit.framework.TestCase;
+import org.junit.Test;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
-public class DVAREEngine {
+public class ParenthesisTest extends TestCase {
+    @Test
+    public void testApp() throws ExpressionParseException, InterpretException {
 
-    RuleConfiguration configuration;
 
-    public DVAREEngine(RuleConfiguration configuration) {
-        this.configuration = configuration;
+        RuleConfiguration factory = new RuleConfiguration();
+
+        String expr = "Variable1 = 'A'" +
+                " AND ( ( Variable2 = 'O'" +
+                " AND Variable3 = 'R' )" +
+                " OR ( Variable4 = 'G'" +
+                " AND Variable5 = 'M' ) )";
+        Expression expression = factory.getParser().fromString(expr, Parenthesis.class);
+
+        Rule rule = new Rule(expression);
+
+        Parenthesis parenthesis = new Parenthesis();
+        parenthesis.setVariable1("A");
+        parenthesis.setVariable2("O");
+        parenthesis.setVariable3("R");
+        parenthesis.setVariable4("K");
+        parenthesis.setVariable5("M");
+
+
+        RuleEvaluator evaluator = factory.getEvaluator();
+        boolean result = evaluator.evaluate(rule, parenthesis);
+        assertTrue(result);
     }
-
-    public boolean evaluate(File rulefile, Class type, Object object) throws IOException, ExpressionParseException, InterpretException {
-
-
-        BufferedReader br = new BufferedReader(new FileReader(rulefile));
-
-        StringBuilder rule = new StringBuilder();
-        String row;
-
-        while ((row = br.readLine()) != null) {
-            rule.append(row.trim());
-            rule.append(" ");
-        }
-
-        return evaluate(rule.toString(), type, object);
-    }
-
-    public boolean evaluate(String rule, Class type, Object object) throws ExpressionParseException, InterpretException {
-        Expression expression = configuration.getParser().fromString(rule, type);
-        Rule ruleExpression = new Rule(expression);
-        ruleExpression.setRawExpression(rule);
-        return evaluate(ruleExpression, object);
-    }
-
-
-    public boolean evaluate(Rule rule, Object object) throws InterpretException {
-        boolean result = configuration.getEvaluator().evaluate(rule, object);
-        return result;
-    }
-
 
 }

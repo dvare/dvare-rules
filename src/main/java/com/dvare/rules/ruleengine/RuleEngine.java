@@ -152,7 +152,7 @@ public class RuleEngine {
                             Condition condition = (Condition) method.getAnnotation(Condition.class);
                             ConditionType conditionType = condition.type();
                             if (conditionType.equals(ConditionType.CODE)) {
-                                result = method.invoke(rule, null);
+                                result = method.invoke(rule);
                             } else if (conditionType.equals(ConditionType.DVARE)) {
                                 result = method.invoke(rule, dvareEngine);
                             }
@@ -160,24 +160,24 @@ public class RuleEngine {
                             if (result != null && ((Boolean) result)) {
 
                                 for (Method before : beforeMethods) {
-                                    before.invoke(rule, null);
+                                    before.invoke(rule);
                                 }
                                 for (Method success : successMethods) {
-                                    success.invoke(rule, null);
+                                    success.invoke(rule);
                                 }
                                 for (Method after : afterMethods) {
-                                    after.invoke(rule, null);
+                                    after.invoke(rule);
                                 }
 
                             } else {
                                 for (Method before : beforeMethods) {
-                                    before.invoke(rule, null);
+                                    before.invoke(rule);
                                 }
                                 for (Method fail : failMethods) {
-                                    fail.invoke(rule, null);
+                                    fail.invoke(rule);
                                 }
                                 for (Method after : afterMethods) {
-                                    after.invoke(rule, null);
+                                    after.invoke(rule);
                                 }
                             }
 

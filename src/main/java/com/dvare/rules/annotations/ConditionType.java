@@ -23,6 +23,6 @@ THE SOFTWARE.*/
 
 package com.dvare.rules.annotations;
 
-public enum  ConditionType {
-    CODE,DVARE;
+public enum ConditionType {
+    CODE, DVARE;
 }

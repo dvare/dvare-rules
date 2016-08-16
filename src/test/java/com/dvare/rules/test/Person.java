@@ -23,41 +23,11 @@ THE SOFTWARE.*/
 
 package com.dvare.rules.test;
 
-import com.dvare.rules.annotations.*;
-import org.apache.log4j.Logger;
 
-@Rule(name = "rule", priority = 0)
-public class RuleTest {
-    Logger logger = Logger.getLogger(RuleTest.class);
-    private Integer age;
-
-
-    @Condition(type = ConditionType.CODE)
-    public Boolean condition() {
-
-        return age > 20 && age < 30;
-    }
-
-    @Before
-    public void beforeAction() {
-        logger.info("Before Rule Running");
-    }
-
-    @Success
-    public void success() {
-        logger.info("Rule Successfully Run");
-    }
-
-    @Fail
-    public void fail() {
-        logger.error("Rule Failed");
-    }
-
-    @After
-    public void afterAction() {
-        logger.info("After Rule Running");
-
-    }
+public class Person {
+    public Integer age;
+    public String title;
+    public String gender;
 
 
     public Integer getAge() {
@@ -66,5 +36,21 @@ public class RuleTest {
 
     public void setAge(Integer age) {
         this.age = age;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 }

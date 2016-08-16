@@ -21,50 +21,23 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 
-package com.dvare.rules.test;
+package com.dvare.rules;
 
-import com.dvare.rules.annotations.*;
-import org.apache.log4j.Logger;
-
-@Rule(name = "rule", priority = 0)
-public class RuleTest {
-    Logger logger = Logger.getLogger(RuleTest.class);
-    private Integer age;
+import com.dvare.rules.test.validation.*;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
 
-    @Condition(type = ConditionType.CODE)
-    public Boolean condition() {
+@RunWith(Suite.class)
+@Suite.SuiteClasses({
 
-        return age > 20 && age < 30;
-    }
+        EqualOperationTest.class,
+        NotEqualOperationTest.class,
+        InOperationTest.class,
+        BetweenOperationTest.class,
+        ParenthesisTest.class,
+      /*  FunctionTestExclude.class,*/
+        ArithmeticOperationTest.class})
+public class ValidationTest {
 
-    @Before
-    public void beforeAction() {
-        logger.info("Before Rule Running");
-    }
-
-    @Success
-    public void success() {
-        logger.info("Rule Successfully Run");
-    }
-
-    @Fail
-    public void fail() {
-        logger.error("Rule Failed");
-    }
-
-    @After
-    public void afterAction() {
-        logger.info("After Rule Running");
-
-    }
-
-
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
-    }
 }

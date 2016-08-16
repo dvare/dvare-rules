@@ -1,1 +1,1 @@
-age > 30 And age < 40
+age between [ 20 , 30 ] And title = 'Ms' And gender = 'Female'

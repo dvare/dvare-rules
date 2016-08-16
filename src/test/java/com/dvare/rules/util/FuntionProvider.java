@@ -21,50 +21,31 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 
-package com.dvare.rules.test;
+package com.dvare.rules.util;
 
-import com.dvare.rules.annotations.*;
-import org.apache.log4j.Logger;
+import com.dvare.annotations.FunctionMethod;
+import com.dvare.annotations.FunctionService;
+import com.dvare.expression.datatype.DataType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-@Rule(name = "rule", priority = 0)
-public class RuleTest {
-    Logger logger = Logger.getLogger(RuleTest.class);
-    private Integer age;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
+@FunctionService
+public class FuntionProvider {
+    static Logger logger = LoggerFactory.getLogger(FuntionProvider.class);
 
-    @Condition(type = ConditionType.CODE)
-    public Boolean condition() {
-
-        return age > 20 && age < 30;
+    @FunctionMethod(returnType = DataType.IntegerType, parameters = {DataType.IntegerType, DataType.StringType})
+    public Integer addFiveFunction(Integer veriable, String veriable2) {
+        logger.debug("inside addFiveFuntion with arguments : " + veriable + " and " + veriable2);
+        return veriable + 5;
     }
 
-    @Before
-    public void beforeAction() {
-        logger.info("Before Rule Running");
-    }
-
-    @Success
-    public void success() {
-        logger.info("Rule Successfully Run");
-    }
-
-    @Fail
-    public void fail() {
-        logger.error("Rule Failed");
-    }
-
-    @After
-    public void afterAction() {
-        logger.info("After Rule Running");
-
-    }
-
-
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
+    @FunctionMethod(returnType = DataType.IntegerType, list = true, parameters = {DataType.IntegerType})
+    public List<Integer> testFun2(Integer veriable) {
+        logger.debug("inside testFun2 with argument literal: " + veriable);
+        return new ArrayList<Integer>(Arrays.asList(new Integer[]{3, 5, 7}));
     }
 }
