@@ -1,42 +1,57 @@
+/*The MIT License (MIT)
+
+Copyright (c) 2016 Muhammad Hammad
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Sogiftware.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.*/
+
+
 package com.dvare.rules.test;
 
-import com.dvare.binding.data.DataRow;
-import com.dvare.binding.model.TypeBinding;
-import com.dvare.config.RuleConfiguration;
+
+import com.dvare.exceptions.interpreter.InterpretException;
 import com.dvare.exceptions.parser.ExpressionParseException;
 import com.dvare.rules.annotations.*;
-import com.dvare.rules.ruleengine.TextRuleEngine;
+import com.dvare.rules.ruleengine.DVAREEngine;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 
 @Rule(name = "fileRule", priority = 0)
 public class FileRuleTest {
 
-    private Integer age;
+    private File rule;
+    private Person person;
 
-    @Condition
-    public boolean condition() {
-        RuleConfiguration configuration = new RuleConfiguration();
-        TextRuleEngine textRuleEngine = new TextRuleEngine(configuration);
+    @Condition(type = ConditionType.DVARE)
+    public boolean condition(DVAREEngine dvareEngine) {
 
-        TypeBinding typeBinding = new TypeBinding();
-        typeBinding.addTypes("age", "IntegerType");
-
-        DataRow dataRow = new DataRow();
-        dataRow.addData("age", age);
 
         boolean result = false;
 
-        URL url = this.getClass().getClassLoader().getResource("rules/age_rule.dvare");
-        File rule = new File(url.getFile());
 
         try {
-            result = textRuleEngine.evaluate(rule, typeBinding, dataRow);
+            result = dvareEngine.evaluate(rule, Person.class, person);
         } catch (ExpressionParseException e) {
             e.printStackTrace();
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterpretException e) {
             e.printStackTrace();
         }
         return result;
@@ -63,11 +78,20 @@ public class FileRuleTest {
         System.out.println("After Rule");
     }
 
-    public Integer getAge() {
-        return age;
+
+    public File getRule() {
+        return rule;
     }
 
-    public void setAge(Integer age) {
-        this.age = age;
+    public void setRule(File rule) {
+        this.rule = rule;
+    }
+
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
     }
 }

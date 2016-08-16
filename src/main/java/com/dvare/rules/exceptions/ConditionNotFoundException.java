@@ -1,33 +1,4 @@
-## What is DVARE RULES [![Build Status](https://travis-ci.org/dvare/rules.svg?branch=master)](https://travis-ci.org/dvare/rules)
-DVARE Rules is rule engine built on dvare  
-[https://dvare.github.io/](https://dvare.github.io/)
-
-## Current version
-
-* The current  version is `1.0` 
-
- you need to add the following maven repository in your `pom.xml`:
-
-```xml
-<repository>
-    <id>davre</id>
-    <url>https://raw.githubusercontent.com/dvare/release/rules/</url>
-</repository>
-
-<dependencies>
-        <dependency>
-            <groupId>com.dvare</groupId>
-            <artifactId>rules</artifactId>
-            <version>1.0</version>
-        </dependency>
-<dependencies>
-```
-
-## License
-DVARE RULES is released under the [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](http://opensource.org/licenses/MIT).
-
-```
-The MIT License (MIT)
+/*The MIT License (MIT)
 
 Copyright (c) 2016 Muhammad Hammad
 
@@ -47,7 +18,30 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-```
+THE SOFTWARE.*/
 
 
+package com.dvare.rules.exceptions;
+
+
+public class ConditionNotFoundException extends IllegalRuleException {
+    public ConditionNotFoundException() {
+    }
+
+    public ConditionNotFoundException(String message) {
+        super(message);
+    }
+
+    public ConditionNotFoundException(Throwable cause) {
+        super(cause);
+    }
+
+    public ConditionNotFoundException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public ConditionNotFoundException(String message, Throwable cause,
+                                      boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
+    }
+}
