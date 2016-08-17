@@ -21,27 +21,22 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 
-package com.dvare.rules.exceptions;
+package com.dvare.annotations;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.TYPE})
+public @interface Rule {
+
+    int priority() default 0;
+
+    String name();
+
+    String description() default "";
 
 
-public class ConditionNotFoundException extends IllegalRuleException {
-    public ConditionNotFoundException() {
-    }
-
-    public ConditionNotFoundException(String message) {
-        super(message);
-    }
-
-    public ConditionNotFoundException(Throwable cause) {
-        super(cause);
-    }
-
-    public ConditionNotFoundException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public ConditionNotFoundException(String message, Throwable cause,
-                                      boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
-    }
 }

@@ -21,50 +21,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 
-package com.dvare.rules.test;
+package com.dvare.annotations;
 
-import com.dvare.rules.annotations.*;
-import org.apache.log4j.Logger;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-@Rule(name = "rule", priority = 0)
-public class RuleTest {
-    Logger logger = Logger.getLogger(RuleTest.class);
-    private Integer age;
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.METHOD})
+public @interface Before {
 
-
-    @Condition(type = ConditionType.CODE)
-    public Boolean condition() {
-
-        return age > 20 && age < 30;
-    }
-
-    @Before
-    public void beforeAction() {
-        logger.info("Before Rule Running");
-    }
-
-    @Success
-    public void success() {
-        logger.info("Rule Successfully Run");
-    }
-
-    @Fail
-    public void fail() {
-        logger.error("Rule Failed");
-    }
-
-    @After
-    public void afterAction() {
-        logger.info("After Rule Running");
-
-    }
-
-
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
-    }
 }

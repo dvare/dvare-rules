@@ -25,7 +25,6 @@ package com.dvare.rules.test.validation;
 
 
 import com.dvare.binding.rule.Rule;
-import com.dvare.binding.rule.RuleRegistry;
 import com.dvare.config.RuleConfiguration;
 import com.dvare.evaluator.RuleEvaluator;
 import com.dvare.exceptions.interpreter.InterpretException;
@@ -57,7 +56,6 @@ public class InOperationTest extends TestCase {
 
         Expression expression = factory.getParser().fromString(exp, InOperation.class);
         Rule rule = new Rule(expression);
-        RuleRegistry rules = new RuleRegistry(rule);
 
         SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd-MM-yyyy-HH:mm:ss");
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");

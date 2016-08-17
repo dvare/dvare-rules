@@ -21,27 +21,27 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 
-package com.dvare.rules.exceptions;
+package com.dvare.exceptions.rule;
 
 
-public class ConditionParamNotFoundException extends IllegalRuleException {
-    public ConditionParamNotFoundException() {
+public class ConditionNotFoundException extends IllegalRuleException {
+    public ConditionNotFoundException() {
     }
 
-    public ConditionParamNotFoundException(String message) {
+    public ConditionNotFoundException(String message) {
         super(message);
     }
 
-    public ConditionParamNotFoundException(Throwable cause) {
+    public ConditionNotFoundException(Throwable cause) {
         super(cause);
     }
 
-    public ConditionParamNotFoundException(String message, Throwable cause) {
+    public ConditionNotFoundException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public ConditionParamNotFoundException(String message, Throwable cause,
-                                           boolean enableSuppression, boolean writableStackTrace) {
+    public ConditionNotFoundException(String message, Throwable cause,
+                                      boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }

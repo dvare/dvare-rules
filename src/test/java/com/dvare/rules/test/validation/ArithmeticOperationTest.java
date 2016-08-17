@@ -24,7 +24,6 @@ THE SOFTWARE.*/
 package com.dvare.rules.test.validation;
 
 import com.dvare.binding.rule.Rule;
-import com.dvare.binding.rule.RuleRegistry;
 import com.dvare.config.RuleConfiguration;
 import com.dvare.evaluator.RuleEvaluator;
 import com.dvare.exceptions.interpreter.InterpretException;

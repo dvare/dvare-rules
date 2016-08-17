@@ -24,10 +24,10 @@ THE SOFTWARE.*/
 package com.dvare.rules.test;
 
 
+import com.dvare.annotations.*;
 import com.dvare.exceptions.interpreter.InterpretException;
 import com.dvare.exceptions.parser.ExpressionParseException;
-import com.dvare.rules.annotations.*;
-import com.dvare.rules.ruleengine.DVAREEngine;
+import com.dvare.ruleengine.TextualRuleEngine;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,15 +38,15 @@ public class FileRuleTest {
     private File rule;
     private Person person;
 
-    @Condition(type = ConditionType.DVARE)
-    public boolean condition(DVAREEngine dvareEngine) {
+    @Condition(type = ConditionType.TEXT)
+    public boolean condition(TextualRuleEngine textualRuleEngine) {
 
 
         boolean result = false;
 
 
         try {
-            result = dvareEngine.evaluate(rule, Person.class, person);
+            result = textualRuleEngine.evaluate(rule, Person.class, person);
         } catch (ExpressionParseException e) {
             e.printStackTrace();
         } catch (IOException e) {

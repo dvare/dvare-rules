@@ -21,8 +21,27 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 
-package com.dvare.rules.annotations;
+package com.dvare.exceptions.rule;
 
-public enum ConditionType {
-    CODE, DVARE;
+
+public class IllegalConditionException extends Exception {
+    public IllegalConditionException() {
+    }
+
+    public IllegalConditionException(String message) {
+        super(message);
+    }
+
+    public IllegalConditionException(Throwable cause) {
+        super(cause);
+    }
+
+    public IllegalConditionException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public IllegalConditionException(String message, Throwable cause,
+                                     boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
+    }
 }

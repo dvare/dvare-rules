@@ -24,12 +24,12 @@ THE SOFTWARE.*/
 package com.dvare.rules;
 
 import com.dvare.config.RuleConfiguration;
-import com.dvare.rules.exceptions.IllegalRuleException;
-import com.dvare.rules.ruleengine.DVAREEngine;
-import com.dvare.rules.ruleengine.RuleEngine;
+import com.dvare.exceptions.rule.IllegalRuleException;
+import com.dvare.ruleengine.TextualRuleEngine;
+import com.dvare.ruleengine.RuleEngine;
 import com.dvare.rules.test.FileRuleTest;
 import com.dvare.rules.test.Person;
-import com.dvare.rules.test.RuleTest;
+import com.dvare.rules.test.FirstRule;
 import com.dvare.rules.test.TextRuleTest;
 import junit.framework.TestCase;
 import org.junit.Test;
@@ -42,10 +42,10 @@ public class BasicTest extends TestCase {
     public void testApp() throws IllegalRuleException {
 
         RuleConfiguration configuration = new RuleConfiguration();
-        DVAREEngine dvareEngine = new DVAREEngine(configuration);
-        RuleEngine ruleEngine = new RuleEngine(dvareEngine);
+        TextualRuleEngine textualRuleEngine = new TextualRuleEngine(configuration);
+        RuleEngine ruleEngine = new RuleEngine(textualRuleEngine);
 
-        RuleTest ruleTest = new RuleTest();
+        FirstRule ruleTest = new FirstRule();
         ruleTest.setAge(25);
         ruleEngine.registerRule(ruleTest);
 

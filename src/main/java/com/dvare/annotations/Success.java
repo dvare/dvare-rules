@@ -21,27 +21,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 
-package com.dvare.rules.exceptions;
+package com.dvare.annotations;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-public class IllegalConditionException extends Exception {
-    public IllegalConditionException() {
-    }
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.METHOD})
+public @interface Success {
 
-    public IllegalConditionException(String message) {
-        super(message);
-    }
-
-    public IllegalConditionException(Throwable cause) {
-        super(cause);
-    }
-
-    public IllegalConditionException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public IllegalConditionException(String message, Throwable cause,
-                                     boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
-    }
 }

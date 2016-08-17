@@ -21,36 +21,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 
-package com.dvare.binding.rule;
+package com.dvare.annotations;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import java.util.ArrayList;
-import java.util.List;
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.METHOD})
+public @interface After {
 
-public class RuleRegistry {
-
-    private List<com.dvare.binding.rule.Rule> rules = new ArrayList<>();
-
-    public RuleRegistry() {
-    }
-
-    public RuleRegistry(com.dvare.binding.rule.Rule rule) {
-        this.rules.add(rule);
-    }
-
-    public RuleRegistry(List<com.dvare.binding.rule.Rule> rules) {
-        this.rules.addAll(rules);
-    }
-
-    public void addRule(com.dvare.binding.rule.Rule rule) {
-        this.rules.add(rule);
-    }
-
-    public List<com.dvare.binding.rule.Rule> getRules() {
-        return rules;
-    }
-
-    public void setRules(List<Rule> rules) {
-        this.rules = rules;
-    }
 }

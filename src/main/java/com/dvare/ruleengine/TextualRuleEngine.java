@@ -21,7 +21,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 
-package com.dvare.rules.ruleengine;
+package com.dvare.ruleengine;
 
 
 import com.dvare.binding.rule.Rule;
@@ -34,12 +34,16 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-
-public class DVAREEngine {
+// condition order
+// before and after for condition
+// rule status by number
+// rule priority
+// getall rule instance by name
+public class TextualRuleEngine {
 
     RuleConfiguration configuration;
 
-    public DVAREEngine(RuleConfiguration configuration) {
+    public TextualRuleEngine(RuleConfiguration configuration) {
         this.configuration = configuration;
     }
 

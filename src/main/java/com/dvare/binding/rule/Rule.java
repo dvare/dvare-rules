@@ -28,31 +28,16 @@ import com.dvare.action.ActionDispatcher;
 import com.dvare.action.NullActionDispatcher;
 import com.dvare.expression.Expression;
 
-public class Rule implements Comparable<com.dvare.binding.rule.Rule> {
-    private String id;
-    private int priority = 0;
+public class Rule {
+    private String name;
     private String rawExpression;
-    private String rawAggreagte;
     private Expression expression;
-    private Expression aggreagte;
     private ActionDispatcher dispatcher = new NullActionDispatcher();
 
     public Rule(Expression expression) {
         this.expression = expression;
     }
 
-    public Rule(Expression expression, Expression aggreagte) {
-        this.expression = expression;
-        this.aggreagte = aggreagte;
-    }
-
-
-    public Rule(Expression expression, Expression aggreagte, ActionDispatcher dispatcher) {
-        this.expression = expression;
-        this.aggreagte = aggreagte;
-        this.dispatcher = dispatcher;
-
-    }
 
     public Rule(Expression expression, ActionDispatcher dispatcher) {
         this.expression = expression;
@@ -60,27 +45,14 @@ public class Rule implements Comparable<com.dvare.binding.rule.Rule> {
 
     }
 
-    @Override
-    public int compareTo(com.dvare.binding.rule.Rule other) {
-        return Integer.compare(this.priority, other.priority);
-    }
-
         /* Getter and Setter */
 
-    public String getId() {
-        return id;
+    public String getName() {
+        return name;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public int getPriority() {
-        return priority;
-    }
-
-    public void setPriority(int priority) {
-        this.priority = priority;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Expression getExpression() {
@@ -99,28 +71,12 @@ public class Rule implements Comparable<com.dvare.binding.rule.Rule> {
         this.dispatcher = dispatcher;
     }
 
-    public Expression getAggreagte() {
-        return aggreagte;
-    }
-
-    public void setAggreagte(Expression aggreagte) {
-        this.aggreagte = aggreagte;
-    }
-
     public String getRawExpression() {
         return rawExpression;
     }
 
     public void setRawExpression(String rawExpression) {
         this.rawExpression = rawExpression;
-    }
-
-    public String getRawAggreagte() {
-        return rawAggreagte;
-    }
-
-    public void setRawAggreagte(String rawAggreagte) {
-        this.rawAggreagte = rawAggreagte;
     }
 
 

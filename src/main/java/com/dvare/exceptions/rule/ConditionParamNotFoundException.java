@@ -21,21 +21,27 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 
-package com.dvare.rules.annotations;
+package com.dvare.exceptions.rule;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD})
-public @interface Condition {
+public class ConditionParamNotFoundException extends IllegalRuleException {
+    public ConditionParamNotFoundException() {
+    }
 
-    ConditionType type();
+    public ConditionParamNotFoundException(String message) {
+        super(message);
+    }
 
-    String rule() default "";
+    public ConditionParamNotFoundException(Throwable cause) {
+        super(cause);
+    }
 
-    String path() default "";
+    public ConditionParamNotFoundException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
+    public ConditionParamNotFoundException(String message, Throwable cause,
+                                           boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
+    }
 }
