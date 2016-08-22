@@ -149,7 +149,7 @@ public class RuleEngine {
      * @return return Map of ruleId and RuleBinding Result
      */
     public Map<String, Boolean> fireRules() {
-
+        ruleResults = new ArrayList<>();
 
         List<RuleStructure> ruleSet = new ArrayList<>(rules.values());
         Collections.sort(ruleSet);

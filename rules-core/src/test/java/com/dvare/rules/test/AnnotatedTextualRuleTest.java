@@ -25,8 +25,6 @@ package com.dvare.rules.test;
 
 
 import com.dvare.annotations.*;
-import com.dvare.exceptions.interpreter.InterpretException;
-import com.dvare.exceptions.parser.ExpressionParseException;
 import com.dvare.ruleengine.TextualRuleEngine;
 import org.apache.log4j.Logger;
 
@@ -41,15 +39,7 @@ public class AnnotatedTextualRuleTest {
     public boolean condition(TextualRuleEngine textualRuleEngine) {
 
 
-        boolean result = false;
-
-        try {
-            result = textualRuleEngine.evaluate(rule, Person.class, person);
-        } catch (ExpressionParseException e) {
-            e.printStackTrace();
-        } catch (InterpretException e) {
-            e.printStackTrace();
-        }
+        boolean result = textualRuleEngine.evaluate(rule, Person.class, person);
 
         return result;
     }

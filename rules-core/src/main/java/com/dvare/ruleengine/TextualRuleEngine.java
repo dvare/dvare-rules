@@ -26,44 +26,52 @@ package com.dvare.ruleengine;
 
 import com.dvare.binding.rule.RuleBinding;
 import com.dvare.exceptions.interpreter.InterpretException;
-import com.dvare.exceptions.parser.ExpressionParseException;
 import com.dvare.expression.Expression;
 import com.dvare.spring.config.RuleConfiguration;
+import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
 
 public class TextualRuleEngine {
-
+    Logger logger = Logger.getLogger(TextualRuleEngine.class);
     RuleConfiguration configuration;
 
     public TextualRuleEngine(RuleConfiguration configuration) {
         this.configuration = configuration;
     }
 
-    public boolean evaluate(File rulefile, Class type, Object object) throws IOException, ExpressionParseException, InterpretException {
+    public boolean evaluate(File rulefile, Class type, Object object) {
 
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(rulefile));
 
-        BufferedReader br = new BufferedReader(new FileReader(rulefile));
+            StringBuilder rule = new StringBuilder();
+            String row;
 
-        StringBuilder rule = new StringBuilder();
-        String row;
+            while ((row = br.readLine()) != null) {
+                rule.append(row.trim());
+                rule.append(" ");
+            }
 
-        while ((row = br.readLine()) != null) {
-            rule.append(row.trim());
-            rule.append(" ");
+            return evaluate(rule.toString(), type, object);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
         }
-
-        return evaluate(rule.toString(), type, object);
+        return false;
     }
 
-    public boolean evaluate(String rule, Class type, Object object) throws ExpressionParseException, InterpretException {
-        Expression expression = configuration.getParser().fromString(rule, type);
-        RuleBinding ruleExpression = new RuleBinding(expression);
-        ruleExpression.setRawExpression(rule);
-        return evaluate(ruleExpression, object);
+    public boolean evaluate(String rule, Class type, Object object) {
+        try {
+            Expression expression = configuration.getParser().fromString(rule, type);
+            RuleBinding ruleExpression = new RuleBinding(expression);
+            ruleExpression.setRawExpression(rule);
+            return evaluate(ruleExpression, object);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
+        return false;
     }
 
 

@@ -36,12 +36,16 @@ import java.util.List;
 public class RulesEngineFactoryBean implements FactoryBean<RuleEngine> {
     Logger logger = Logger.getLogger(RulesEngineFactoryBean.class);
     private String[] functionPackages;
+    private Integer satisfyCondition = 0;
+    private Boolean stopOnFail = false;
     private List<Object> rules = new ArrayList<>();
 
     @Override
     public RuleEngine getObject() throws Exception {
         RuleEngineBuilder ruleEngineBuilder = new RuleEngineBuilder();
         ruleEngineBuilder.functionPackages(functionPackages);
+        ruleEngineBuilder.satisfyCondition(satisfyCondition);
+        ruleEngineBuilder.stopOnFail(false);
         RuleEngine ruleEngine = ruleEngineBuilder.build();
         registerRules(ruleEngine);
         return ruleEngine;
@@ -69,12 +73,28 @@ public class RulesEngineFactoryBean implements FactoryBean<RuleEngine> {
         return false;
     }
 
+    public Integer getSatisfyCondition() {
+        return satisfyCondition;
+    }
+
+    public void setSatisfyCondition(Integer satisfyCondition) {
+        this.satisfyCondition = satisfyCondition;
+    }
+
     public String[] getFunctionPackages() {
         return functionPackages;
     }
 
     public void setFunctionPackages(String[] functionPackages) {
         this.functionPackages = functionPackages;
+    }
+
+    public Boolean getStopOnFail() {
+        return stopOnFail;
+    }
+
+    public void setStopOnFail(Boolean stopOnFail) {
+        this.stopOnFail = stopOnFail;
     }
 
     public List<Object> getRules() {

@@ -24,8 +24,6 @@ THE SOFTWARE.*/
 package com.dvare.rules.test;
 
 
-import com.dvare.exceptions.interpreter.InterpretException;
-import com.dvare.exceptions.parser.ExpressionParseException;
 import com.dvare.rule.TextualRule;
 import com.dvare.ruleengine.TextualRuleEngine;
 import org.apache.log4j.Logger;
@@ -45,15 +43,7 @@ public class TextualRuleTest implements TextualRule {
 
     @Override
     public boolean condition(TextualRuleEngine textualRuleEngine) {
-        boolean result = false;
-        try {
-            result = textualRuleEngine.evaluate(rule, Person.class, person);
-        } catch (ExpressionParseException e) {
-            e.printStackTrace();
-        } catch (InterpretException e) {
-            e.printStackTrace();
-        }
-
+        boolean result = textualRuleEngine.evaluate(rule, Person.class, person);
         return result;
     }
 

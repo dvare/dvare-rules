@@ -25,13 +25,10 @@ package com.dvare.rules.test;
 
 
 import com.dvare.annotations.*;
-import com.dvare.exceptions.interpreter.InterpretException;
-import com.dvare.exceptions.parser.ExpressionParseException;
 import com.dvare.ruleengine.TextualRuleEngine;
 import org.apache.log4j.Logger;
 
 import java.io.File;
-import java.io.IOException;
 
 @Rule(name = "fileRule", priority = 0)
 public class AnnotatedFileRuleTest {
@@ -43,18 +40,9 @@ public class AnnotatedFileRuleTest {
     public boolean condition(TextualRuleEngine textualRuleEngine) {
 
 
-        boolean result = false;
+        boolean result = textualRuleEngine.evaluate(rule, Person.class, person);
 
 
-        try {
-            result = textualRuleEngine.evaluate(rule, Person.class, person);
-        } catch (ExpressionParseException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterpretException e) {
-            e.printStackTrace();
-        }
         return result;
     }
 

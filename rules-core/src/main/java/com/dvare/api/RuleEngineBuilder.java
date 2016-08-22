@@ -5,7 +5,7 @@ import com.dvare.ruleengine.TextualRuleEngine;
 import com.dvare.spring.config.RuleConfiguration;
 
 public class RuleEngineBuilder {
-    Integer satisfyCondition = 0;
+    private Integer satisfyCondition = 0;
     private String[] functionPackages;
     private Boolean stopOnFail = false;
 
