@@ -24,21 +24,17 @@ THE SOFTWARE.*/
 package com.dvare.ruleengine;
 
 
-import com.dvare.binding.rule.Rule;
-import com.dvare.config.RuleConfiguration;
+import com.dvare.binding.rule.RuleBinding;
 import com.dvare.exceptions.interpreter.InterpretException;
 import com.dvare.exceptions.parser.ExpressionParseException;
 import com.dvare.expression.Expression;
+import com.dvare.spring.config.RuleConfiguration;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-// condition order
-// before and after for condition
-// rule status by number
-// rule priority
-// getall rule instance by name
+
 public class TextualRuleEngine {
 
     RuleConfiguration configuration;
@@ -65,13 +61,13 @@ public class TextualRuleEngine {
 
     public boolean evaluate(String rule, Class type, Object object) throws ExpressionParseException, InterpretException {
         Expression expression = configuration.getParser().fromString(rule, type);
-        Rule ruleExpression = new Rule(expression);
+        RuleBinding ruleExpression = new RuleBinding(expression);
         ruleExpression.setRawExpression(rule);
         return evaluate(ruleExpression, object);
     }
 
 
-    public boolean evaluate(Rule rule, Object object) throws InterpretException {
+    public boolean evaluate(RuleBinding rule, Object object) throws InterpretException {
         boolean result = configuration.getEvaluator().evaluate(rule, object);
         return result;
     }

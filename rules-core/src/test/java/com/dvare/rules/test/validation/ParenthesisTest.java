@@ -24,13 +24,13 @@ THE SOFTWARE.*/
 package com.dvare.rules.test.validation;
 
 
-import com.dvare.binding.rule.Rule;
-import com.dvare.config.RuleConfiguration;
+import com.dvare.binding.rule.RuleBinding;
 import com.dvare.evaluator.RuleEvaluator;
 import com.dvare.exceptions.interpreter.InterpretException;
 import com.dvare.exceptions.parser.ExpressionParseException;
 import com.dvare.expression.Expression;
 import com.dvare.rules.test.validation.dataobjects.Parenthesis;
+import com.dvare.spring.config.RuleConfiguration;
 import junit.framework.TestCase;
 import org.junit.Test;
 
@@ -48,7 +48,7 @@ public class ParenthesisTest extends TestCase {
                 " AND Variable5 = 'M' ) )";
         Expression expression = factory.getParser().fromString(expr, Parenthesis.class);
 
-        Rule rule = new Rule(expression);
+        RuleBinding rule = new RuleBinding(expression);
 
         Parenthesis parenthesis = new Parenthesis();
         parenthesis.setVariable1("A");

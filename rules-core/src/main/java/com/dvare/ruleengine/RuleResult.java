@@ -21,21 +21,35 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 
-package com.dvare.evaluator;
+package com.dvare.ruleengine;
 
 
-import com.dvare.binding.rule.RuleBinding;
-import com.dvare.exceptions.interpreter.InterpretException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+public class RuleResult {
+    private String ruleId;
+    private Object rule;
+    private Boolean result;
 
-public class RuleEvaluator {
-    static Logger logger = LoggerFactory.getLogger(RuleEvaluator.class);
+    public String getRuleId() {
+        return ruleId;
+    }
 
-    public boolean evaluate(RuleBinding rule, Object object) throws InterpretException {
-        boolean result = (Boolean) rule.getExpression().interpret(object);
+    public void setRuleId(String ruleId) {
+        this.ruleId = ruleId;
+    }
+
+    public Object getRule() {
+        return rule;
+    }
+
+    public void setRule(Object rule) {
+        this.rule = rule;
+    }
+
+    public Boolean getResult() {
         return result;
     }
 
-
+    public void setResult(Boolean result) {
+        this.result = result;
+    }
 }

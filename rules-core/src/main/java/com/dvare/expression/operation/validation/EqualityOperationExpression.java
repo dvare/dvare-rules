@@ -1,6 +1,5 @@
 package com.dvare.expression.operation.validation;
 
-import com.dvare.config.ConfigurationRegistry;
 import com.dvare.exceptions.interpreter.InterpretException;
 import com.dvare.exceptions.parser.ExpressionParseException;
 import com.dvare.exceptions.parser.IllegalOperationException;
@@ -14,6 +13,7 @@ import com.dvare.expression.literal.NullLiteral;
 import com.dvare.expression.veriable.VariableExpression;
 import com.dvare.expression.veriable.VariableType;
 import com.dvare.parser.ExpressionTokenizer;
+import com.dvare.spring.config.ConfigurationRegistry;
 
 import java.lang.annotation.Annotation;
 import java.util.*;
@@ -196,7 +196,7 @@ public abstract class EqualityOperationExpression extends OperationExpression {
             }
             leftExpression = literalExpression;
 
-        }  else if (left instanceof VariableExpression) {
+        } else if (left instanceof VariableExpression) {
             VariableExpression variableExpression = (VariableExpression) left;
             variableExpression = VariableType.setVariableValue(variableExpression, object);
             if (variableExpression != null) {
@@ -247,7 +247,7 @@ public abstract class EqualityOperationExpression extends OperationExpression {
         LiteralExpression<?> rightExpression = rightValueOperand;
 
         if ((leftExpression != null && !(leftExpression instanceof NullLiteral)) && (rightExpression != null && !(rightExpression instanceof NullLiteral))) {
-             return dataType.compare(this, leftExpression, rightExpression);
+            return dataType.compare(this, leftExpression, rightExpression);
 
         }
 

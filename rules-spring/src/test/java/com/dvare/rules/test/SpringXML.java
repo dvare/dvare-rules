@@ -21,21 +21,29 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 
-package com.dvare.evaluator;
+package com.dvare.rules.test;
 
 
-import com.dvare.binding.rule.RuleBinding;
-import com.dvare.exceptions.interpreter.InterpretException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.dvare.exceptions.rule.IllegalRuleException;
+import com.dvare.ruleengine.RuleEngine;
+import junit.framework.TestCase;
+import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class RuleEvaluator {
-    static Logger logger = LoggerFactory.getLogger(RuleEvaluator.class);
+public class SpringXML extends TestCase {
 
-    public boolean evaluate(RuleBinding rule, Object object) throws InterpretException {
-        boolean result = (Boolean) rule.getExpression().interpret(object);
-        return result;
+    @Test
+    public void testApp() throws IllegalRuleException {
+        ApplicationContext context =
+                new ClassPathXmlApplicationContext("application-context.xml");
+        RuleEngine ruleEngine = context.getBean(RuleEngine.class);
+
+        FirstRule ruleTest = new FirstRule();
+        ruleTest.setAge(25);
+        ruleEngine.registerRule(ruleTest);
+
+        ruleEngine.fireRules();
     }
-
 
 }

@@ -23,13 +23,13 @@ THE SOFTWARE.*/
 
 package com.dvare.rules.test.validation;
 
-import com.dvare.binding.rule.Rule;
-import com.dvare.config.RuleConfiguration;
+import com.dvare.binding.rule.RuleBinding;
 import com.dvare.evaluator.RuleEvaluator;
 import com.dvare.exceptions.interpreter.InterpretException;
 import com.dvare.exceptions.parser.ExpressionParseException;
 import com.dvare.expression.Expression;
 import com.dvare.rules.test.validation.dataobjects.EqualOperation;
+import com.dvare.spring.config.RuleConfiguration;
 import junit.framework.TestCase;
 import org.junit.Test;
 
@@ -51,7 +51,7 @@ public class EqualOperationTest extends TestCase {
                 " And Variable7 = R'A1.*'";
 
         Expression expression = factory.getParser().fromString(exp, EqualOperation.class);
-        Rule rule = new Rule(expression);
+        RuleBinding rule = new RuleBinding(expression);
 
         SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd-MM-yyyy-HH:mm:ss");
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");

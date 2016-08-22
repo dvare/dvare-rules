@@ -21,7 +21,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 
-package com.dvare.config;
+package com.dvare.spring.config;
 
 import com.dvare.binding.function.FunctionBinding;
 import com.dvare.expression.operation.validation.Operation;

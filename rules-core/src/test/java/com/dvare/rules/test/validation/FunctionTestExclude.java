@@ -24,13 +24,13 @@ THE SOFTWARE.*/
 package com.dvare.rules.test.validation;
 
 
-import com.dvare.binding.rule.Rule;
-import com.dvare.config.RuleConfiguration;
+import com.dvare.binding.rule.RuleBinding;
 import com.dvare.evaluator.RuleEvaluator;
 import com.dvare.exceptions.interpreter.InterpretException;
 import com.dvare.exceptions.parser.ExpressionParseException;
 import com.dvare.expression.Expression;
 import com.dvare.rules.test.validation.dataobjects.Function;
+import com.dvare.spring.config.RuleConfiguration;
 import junit.framework.TestCase;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -41,14 +41,14 @@ public class FunctionTestExclude extends TestCase {
     static Logger logger = LoggerFactory.getLogger(FunctionTestExclude.class);
 
     @Test
-    public void testApp()  throws ExpressionParseException, InterpretException {
+    public void testApp() throws ExpressionParseException, InterpretException {
 
         RuleConfiguration configuration = new RuleConfiguration(new String[]{"com.dvare.rules.util"});
 
         Expression expression = configuration.getParser().fromString("Variable1 = fun ( addFiveFunction , Variable2, Variable3 )", Function.class);
-        Rule rule = new Rule(expression);
+        RuleBinding rule = new RuleBinding(expression);
 
-        Function function=new Function();
+        Function function = new Function();
         function.setVariable1(15);
         function.setVariable2(10);
         function.setVariable3("test 2nd argument");
@@ -65,7 +65,7 @@ public class FunctionTestExclude extends TestCase {
         RuleConfiguration configuration = new RuleConfiguration(new String[]{"com.dvare.rules.util"});
 
         Expression expression = configuration.getParser().fromString("Variable1 in fun ( testFun2 , Variable2 )", Function.class);
-        Rule rule = new Rule(expression);
+        RuleBinding rule = new RuleBinding(expression);
 
         Function function=new Function();
         function.setVariable1(5);

@@ -29,7 +29,7 @@ import org.junit.runners.Suite;
 
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({BasicTest.class,ValidationTest.class})
+@Suite.SuiteClasses({RuleTest.class, AnnotatedTest.class, ValidationTest.class})
 public class AppTest {
 
 

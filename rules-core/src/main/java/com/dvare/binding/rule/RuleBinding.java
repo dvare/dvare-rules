@@ -28,18 +28,18 @@ import com.dvare.action.ActionDispatcher;
 import com.dvare.action.NullActionDispatcher;
 import com.dvare.expression.Expression;
 
-public class Rule {
+public class RuleBinding {
     private String name;
     private String rawExpression;
     private Expression expression;
     private ActionDispatcher dispatcher = new NullActionDispatcher();
 
-    public Rule(Expression expression) {
+    public RuleBinding(Expression expression) {
         this.expression = expression;
     }
 
 
-    public Rule(Expression expression, ActionDispatcher dispatcher) {
+    public RuleBinding(Expression expression, ActionDispatcher dispatcher) {
         this.expression = expression;
         this.dispatcher = dispatcher;
 

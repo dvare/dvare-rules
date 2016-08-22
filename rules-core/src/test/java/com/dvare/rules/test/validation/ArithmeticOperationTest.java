@@ -23,19 +23,19 @@ THE SOFTWARE.*/
 
 package com.dvare.rules.test.validation;
 
-import com.dvare.binding.rule.Rule;
-import com.dvare.config.RuleConfiguration;
+import com.dvare.binding.rule.RuleBinding;
 import com.dvare.evaluator.RuleEvaluator;
 import com.dvare.exceptions.interpreter.InterpretException;
 import com.dvare.exceptions.parser.ExpressionParseException;
 import com.dvare.expression.Expression;
 import com.dvare.rules.test.validation.dataobjects.ArithmeticOperation;
+import com.dvare.spring.config.RuleConfiguration;
 import junit.framework.TestCase;
 import org.junit.Test;
 
 public class ArithmeticOperationTest extends TestCase {
     @Test
-    public void testApp() throws ExpressionParseException , InterpretException {
+    public void testApp() throws ExpressionParseException, InterpretException {
 
         RuleConfiguration factory = new RuleConfiguration();
 
@@ -47,10 +47,10 @@ public class ArithmeticOperationTest extends TestCase {
                 " And Variable2 = ( Variable1 max Variable2 )";
 
         Expression expression = factory.getParser().fromString(exp, ArithmeticOperation.class);
-        Rule rule = new Rule(expression);
+        RuleBinding rule = new RuleBinding(expression);
 
 
-        ArithmeticOperation arithmeticOperation=new ArithmeticOperation();
+        ArithmeticOperation arithmeticOperation = new ArithmeticOperation();
         arithmeticOperation.setVariable1(10);
         arithmeticOperation.setVariable2(20);
 
@@ -59,7 +59,7 @@ public class ArithmeticOperationTest extends TestCase {
         assertTrue(result);
     }
 
-    public void testApp2() throws ExpressionParseException , InterpretException {
+    public void testApp2() throws ExpressionParseException, InterpretException {
 
         RuleConfiguration factory = new RuleConfiguration();
 
@@ -72,9 +72,9 @@ public class ArithmeticOperationTest extends TestCase {
                 " And Variable4 = ( Variable3 max Variable4 )";
 
         Expression expression = factory.getParser().fromString(exp, ArithmeticOperation.class);
-        Rule rule = new Rule(expression);
+        RuleBinding rule = new RuleBinding(expression);
 
-        ArithmeticOperation arithmeticOperation=new ArithmeticOperation();
+        ArithmeticOperation arithmeticOperation = new ArithmeticOperation();
         arithmeticOperation.setVariable3(10.0f);
         arithmeticOperation.setVariable4(20.0f);
 

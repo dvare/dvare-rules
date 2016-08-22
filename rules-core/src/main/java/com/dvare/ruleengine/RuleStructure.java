@@ -21,21 +21,24 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 
-package com.dvare.evaluator;
+package com.dvare.ruleengine;
+
+import java.util.ArrayList;
+import java.util.List;
+
+class RuleStructure implements Comparable<RuleStructure> {
+    String ruleId;
+    Object rule;
+    Integer priority;
+    List<ConditionStructure> conditions = new ArrayList<>();
+    List<MethodStructure> successMethods = new ArrayList<>();
+    List<MethodStructure> failMethods = new ArrayList<>();
+    List<MethodStructure> beforeMethods = new ArrayList<>();
+    List<MethodStructure> afterMethods = new ArrayList<>();
 
 
-import com.dvare.binding.rule.RuleBinding;
-import com.dvare.exceptions.interpreter.InterpretException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-public class RuleEvaluator {
-    static Logger logger = LoggerFactory.getLogger(RuleEvaluator.class);
-
-    public boolean evaluate(RuleBinding rule, Object object) throws InterpretException {
-        boolean result = (Boolean) rule.getExpression().interpret(object);
-        return result;
+    @Override
+    public int compareTo(RuleStructure other) {
+        return this.priority.compareTo(other.priority);
     }
-
-
 }

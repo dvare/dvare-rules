@@ -23,12 +23,12 @@ THE SOFTWARE.*/
 
 package com.dvare.parser;
 
-import com.dvare.config.ConfigurationRegistry;
-import com.dvare.config.RuleConfiguration;
 import com.dvare.exceptions.parser.ExpressionParseException;
 import com.dvare.expression.BooleanExpression;
 import com.dvare.expression.Expression;
 import com.dvare.expression.operation.validation.Operation;
+import com.dvare.spring.config.ConfigurationRegistry;
+import com.dvare.spring.config.RuleConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

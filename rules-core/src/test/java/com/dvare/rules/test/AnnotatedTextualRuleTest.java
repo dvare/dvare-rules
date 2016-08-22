@@ -23,24 +23,49 @@ THE SOFTWARE.*/
 
 package com.dvare.rules.test;
 
+
 import com.dvare.annotations.*;
+import com.dvare.exceptions.interpreter.InterpretException;
+import com.dvare.exceptions.parser.ExpressionParseException;
+import com.dvare.ruleengine.TextualRuleEngine;
 import org.apache.log4j.Logger;
 
-@Rule(name = "firstRule", priority = 0)
-public class FirstRule {
-    Logger logger = Logger.getLogger(FirstRule.class);
-    private Integer age;
+@Rule(name = "textRule", priority = 0)
+public class AnnotatedTextualRuleTest {
+    Logger logger = Logger.getLogger(AnnotatedTextualRuleTest.class);
 
-    @Condition(type = ConditionType.CODE)
-    public Boolean condition() {
+    private String rule;
+    private Person person;
 
-        return age > 20 && age < 30;
+    @Condition(type = ConditionType.TEXT)
+    public boolean condition(TextualRuleEngine textualRuleEngine) {
+
+
+        boolean result = false;
+
+        try {
+            result = textualRuleEngine.evaluate(rule, Person.class, person);
+        } catch (ExpressionParseException e) {
+            e.printStackTrace();
+        } catch (InterpretException e) {
+            e.printStackTrace();
+        }
+
+        return result;
     }
+
 
     @Before
-    public void beforeAction() {
-        logger.info("Before Rule Running");
+    public void beforeCondition() {
+        logger.info("Before Condition ");
     }
+
+    @After
+    public void afterCondition() {
+        logger.info("After Condition ");
+
+    }
+
 
     @Success
     public void success() {
@@ -52,18 +77,12 @@ public class FirstRule {
         logger.error("Rule Failed");
     }
 
-    @After
-    public void afterAction() {
-        logger.info("After Rule Running");
 
+    public void setRule(String rule) {
+        this.rule = rule;
     }
 
-
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
+    public void setPerson(Person person) {
+        this.person = person;
     }
 }

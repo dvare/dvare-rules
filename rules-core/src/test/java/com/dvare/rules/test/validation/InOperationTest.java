@@ -24,13 +24,13 @@ THE SOFTWARE.*/
 package com.dvare.rules.test.validation;
 
 
-import com.dvare.binding.rule.Rule;
-import com.dvare.config.RuleConfiguration;
+import com.dvare.binding.rule.RuleBinding;
 import com.dvare.evaluator.RuleEvaluator;
 import com.dvare.exceptions.interpreter.InterpretException;
 import com.dvare.exceptions.parser.ExpressionParseException;
 import com.dvare.expression.Expression;
 import com.dvare.rules.test.validation.dataobjects.InOperation;
+import com.dvare.spring.config.RuleConfiguration;
 import junit.framework.TestCase;
 import org.junit.Test;
 
@@ -39,7 +39,7 @@ import java.text.SimpleDateFormat;
 
 public class InOperationTest extends TestCase {
     @Test
-    public void testApp()  throws ExpressionParseException, InterpretException, ParseException {
+    public void testApp() throws ExpressionParseException, InterpretException, ParseException {
 
         RuleConfiguration factory = new RuleConfiguration();
         String exp = "Variable1 in ['A','B']" +
@@ -51,9 +51,8 @@ public class InOperationTest extends TestCase {
                 " And Variable7 in [R'B1.*',R'A1.*']";
 
 
-
         Expression expression = factory.getParser().fromString(exp, InOperation.class);
-        Rule rule = new Rule(expression);
+        RuleBinding rule = new RuleBinding(expression);
 
         SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd-MM-yyyy-HH:mm:ss");
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");

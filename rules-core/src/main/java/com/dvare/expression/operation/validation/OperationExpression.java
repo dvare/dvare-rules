@@ -24,12 +24,12 @@ THE SOFTWARE.*/
 package com.dvare.expression.operation.validation;
 
 import com.dvare.ast.Node;
-import com.dvare.config.ConfigurationRegistry;
 import com.dvare.exceptions.parser.ExpressionParseException;
 import com.dvare.expression.Expression;
 import com.dvare.expression.datatype.DataType;
 import com.dvare.expression.literal.LiteralExpression;
 import com.dvare.expression.veriable.VariableExpression;
+import com.dvare.spring.config.ConfigurationRegistry;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -17,9 +17,14 @@ DVARE Rules is rule engine built on dvare
 <dependencies>
         <dependency>
             <groupId>com.dvare</groupId>
-            <artifactId>rules</artifactId>
+            <artifactId>rules-core</artifactId>
             <version>1.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.dvare</groupId>
+            <artifactId>rules-spring</artifactId>
+            <version>1.0</version>
+        </dependency>           
 <dependencies>
 ```
 

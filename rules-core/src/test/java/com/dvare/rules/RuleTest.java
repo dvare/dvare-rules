@@ -23,21 +23,17 @@ THE SOFTWARE.*/
 
 package com.dvare.rules;
 
-import com.dvare.config.RuleConfiguration;
 import com.dvare.exceptions.rule.IllegalRuleException;
 import com.dvare.ruleengine.RuleEngine;
 import com.dvare.ruleengine.TextualRuleEngine;
-import com.dvare.rules.test.FileRuleTest;
-import com.dvare.rules.test.FirstRule;
+import com.dvare.rules.test.BasicRuleTest;
 import com.dvare.rules.test.Person;
-import com.dvare.rules.test.TextRuleTest;
+import com.dvare.rules.test.TextualRuleTest;
+import com.dvare.spring.config.RuleConfiguration;
 import junit.framework.TestCase;
 import org.junit.Test;
 
-import java.io.File;
-import java.net.URL;
-
-public class BasicTest extends TestCase {
+public class RuleTest extends TestCase {
     @Test
     public void testApp() throws IllegalRuleException {
 
@@ -45,34 +41,17 @@ public class BasicTest extends TestCase {
         TextualRuleEngine textualRuleEngine = new TextualRuleEngine(configuration);
         RuleEngine ruleEngine = new RuleEngine(textualRuleEngine);
 
-        FirstRule ruleTest = new FirstRule();
-        ruleTest.setAge(25);
-        ruleEngine.registerRule(ruleTest);
+        BasicRuleTest basicRule = new BasicRuleTest();
+        ruleEngine.registerRule(basicRule);
 
 
-        Person male = new Person();
-        male.setAge(25);
-        male.setGender("Male");
-        male.setTitle("Mr");
+        Person person = new Person();
+        person.setAge(25);
 
-        TextRuleTest textRuleTest = new TextRuleTest();
-        textRuleTest.setRule("age between [ 20 , 30 ] And title = 'Mr' And gender = 'Male'");
-        textRuleTest.setPerson(male);
-
-        ruleEngine.registerRule(textRuleTest);
-
-
-        Person female = new Person();
-        female.setAge(25);
-        female.setGender("Female");
-        female.setTitle("Ms");
-
-
-        FileRuleTest fileRuleTest = new FileRuleTest();
-        URL url = this.getClass().getClassLoader().getResource("rules/age_rule.dvr");
-        fileRuleTest.setRule(new File(url.getFile()));
-        fileRuleTest.setPerson(female);
-        ruleEngine.registerRule(fileRuleTest);
+        TextualRuleTest textualRule = new TextualRuleTest();
+        textualRule.setRule("age between [ 20 , 30 ]");
+        textualRule.setPerson(person);
+        ruleEngine.registerRule(textualRule);
 
         ruleEngine.fireRules();
 

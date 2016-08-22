@@ -23,13 +23,13 @@ THE SOFTWARE.*/
 
 package com.dvare.rules.test.validation;
 
-import com.dvare.binding.rule.Rule;
-import com.dvare.config.RuleConfiguration;
+import com.dvare.binding.rule.RuleBinding;
 import com.dvare.evaluator.RuleEvaluator;
 import com.dvare.exceptions.interpreter.InterpretException;
 import com.dvare.exceptions.parser.ExpressionParseException;
 import com.dvare.expression.Expression;
 import com.dvare.rules.test.validation.dataobjects.BetweenOperation;
+import com.dvare.spring.config.RuleConfiguration;
 import junit.framework.TestCase;
 import org.junit.Test;
 
@@ -47,12 +47,12 @@ public class BetweenOperationTest extends TestCase {
                 " And Variable3 between [12-05-2016,15-06-2016] ";
 
         Expression expression = factory.getParser().fromString(exp, BetweenOperation.class);
-        Rule rule = new Rule(expression);
+        RuleBinding rule = new RuleBinding(expression);
 
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
-        BetweenOperation betweenOperation=new BetweenOperation();
+        BetweenOperation betweenOperation = new BetweenOperation();
         betweenOperation.setVariable1(2);
         betweenOperation.setVariable2(3.2f);
         betweenOperation.setVariable3(dateFormat.parse("28-05-2016"));

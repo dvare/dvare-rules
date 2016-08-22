@@ -21,7 +21,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 
-package com.dvare.config;
+package com.dvare.spring.config;
 
 
 import com.dvare.annotations.ClassFinder;

@@ -24,13 +24,13 @@ THE SOFTWARE.*/
 package com.dvare.expression.operation.validation;
 
 import com.dvare.annotations.OperationType;
-import com.dvare.config.ConfigurationRegistry;
 import com.dvare.exceptions.parser.ExpressionParseException;
 import com.dvare.exceptions.parser.IllegalValueException;
 import com.dvare.expression.Expression;
 import com.dvare.expression.NamedExpression;
 import com.dvare.expression.datatype.DataType;
 import com.dvare.expression.literal.DateLiteral;
+import com.dvare.spring.config.ConfigurationRegistry;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

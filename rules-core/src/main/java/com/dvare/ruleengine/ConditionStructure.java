@@ -21,21 +21,19 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 
-package com.dvare.evaluator;
+package com.dvare.ruleengine;
 
+import com.dvare.annotations.ConditionType;
 
-import com.dvare.binding.rule.RuleBinding;
-import com.dvare.exceptions.interpreter.InterpretException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.lang.reflect.Method;
 
-public class RuleEvaluator {
-    static Logger logger = LoggerFactory.getLogger(RuleEvaluator.class);
+class ConditionStructure implements Comparable<ConditionStructure> {
+    Method condition;
+    Integer order;
+    ConditionType conditionType;
 
-    public boolean evaluate(RuleBinding rule, Object object) throws InterpretException {
-        boolean result = (Boolean) rule.getExpression().interpret(object);
-        return result;
+    @Override
+    public int compareTo(ConditionStructure other) {
+        return this.order.compareTo(other.order);
     }
-
-
 }

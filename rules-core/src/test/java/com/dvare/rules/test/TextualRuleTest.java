@@ -21,21 +21,59 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 
-package com.dvare.evaluator;
+package com.dvare.rules.test;
 
 
-import com.dvare.binding.rule.RuleBinding;
 import com.dvare.exceptions.interpreter.InterpretException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.dvare.exceptions.parser.ExpressionParseException;
+import com.dvare.rule.TextualRule;
+import com.dvare.ruleengine.TextualRuleEngine;
+import org.apache.log4j.Logger;
 
-public class RuleEvaluator {
-    static Logger logger = LoggerFactory.getLogger(RuleEvaluator.class);
 
-    public boolean evaluate(RuleBinding rule, Object object) throws InterpretException {
-        boolean result = (Boolean) rule.getExpression().interpret(object);
+public class TextualRuleTest implements TextualRule {
+    Logger logger = Logger.getLogger(TextualRuleTest.class);
+
+    private String rule;
+    private Person person;
+
+    @Override
+    public String getName() {
+        return "textualRuleTest";
+    }
+
+
+    @Override
+    public boolean condition(TextualRuleEngine textualRuleEngine) {
+        boolean result = false;
+        try {
+            result = textualRuleEngine.evaluate(rule, Person.class, person);
+        } catch (ExpressionParseException e) {
+            e.printStackTrace();
+        } catch (InterpretException e) {
+            e.printStackTrace();
+        }
+
         return result;
     }
 
 
+    @Override
+    public void success() {
+        logger.info("Rule Successfully Run");
+    }
+
+    @Override
+    public void fail() {
+        logger.error("Rule Failed");
+    }
+
+
+    public void setRule(String rule) {
+        this.rule = rule;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
+    }
 }
