@@ -1,8 +1,8 @@
 package com.dvare.api;
 
+import com.dvare.config.RuleConfiguration;
 import com.dvare.ruleengine.RuleEngine;
 import com.dvare.ruleengine.TextualRuleEngine;
-import com.dvare.spring.config.RuleConfiguration;
 
 public class RuleEngineBuilder {
     private Integer satisfyCondition = 0;

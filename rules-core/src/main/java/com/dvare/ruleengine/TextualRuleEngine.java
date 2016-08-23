@@ -25,9 +25,9 @@ package com.dvare.ruleengine;
 
 
 import com.dvare.binding.rule.RuleBinding;
+import com.dvare.config.RuleConfiguration;
 import com.dvare.exceptions.interpreter.InterpretException;
 import com.dvare.expression.Expression;
-import com.dvare.spring.config.RuleConfiguration;
 import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;

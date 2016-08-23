@@ -27,6 +27,7 @@
     <modules>
         <module>rules-core</module>
         <module>rules-spring</module>
+        <module>rules-rest</module>
     </modules>
 
     <properties>
@@ -44,6 +45,11 @@
     </properties>
 
     <repositories>
+        <repository>
+            <id>davre</id>
+            <url>https://raw.githubusercontent.com/dvare/release/dvare/</url>
+        </repository>
+
         <repository>
             <id>maven-repo</id>
             <url>http://repo1.maven.org/maven/</url>
@@ -77,6 +83,13 @@
 
     <dependencyManagement>
         <dependencies>
+
+            <dependency>
+                <groupId>com.dvare</groupId>
+                <artifactId>dvare</artifactId>
+                <version>1.0</version>
+            </dependency>
+
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>

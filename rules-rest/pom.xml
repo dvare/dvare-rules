@@ -7,10 +7,10 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>rules-core</artifactId>
+    <artifactId>rules-rest</artifactId>
     <packaging>jar</packaging>
 
-    <name>DVARE RULES CORE</name>
+    <name>DVARE RULES REST API</name>
     <url>http://maven.apache.org</url>
 
     <developers>
@@ -47,10 +47,22 @@
     </distributionManagement>
 
     <dependencies>
-
         <dependency>
             <groupId>com.dvare</groupId>
-            <artifactId>dvare</artifactId>
+            <artifactId>rules-core</artifactId>
+            <version>1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring.version}</version>
         </dependency>
 
         <dependency>
@@ -93,4 +105,5 @@
             </plugin>
         </plugins>
     </build>
+
 </project>

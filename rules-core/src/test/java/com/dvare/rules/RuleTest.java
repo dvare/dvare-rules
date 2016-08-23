@@ -23,13 +23,13 @@ THE SOFTWARE.*/
 
 package com.dvare.rules;
 
+import com.dvare.config.RuleConfiguration;
 import com.dvare.exceptions.rule.IllegalRuleException;
 import com.dvare.ruleengine.RuleEngine;
 import com.dvare.ruleengine.TextualRuleEngine;
 import com.dvare.rules.test.BasicRuleTest;
 import com.dvare.rules.test.Person;
 import com.dvare.rules.test.TextualRuleTest;
-import com.dvare.spring.config.RuleConfiguration;
 import junit.framework.TestCase;
 import org.junit.Test;
 

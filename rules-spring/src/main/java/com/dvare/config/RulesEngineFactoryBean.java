@@ -21,7 +21,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 
-package com.dvare.spring.config;
+package com.dvare.config;
 
 
 import com.dvare.api.RuleEngineBuilder;
