@@ -2,8 +2,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>rules</artifactId>
-        <groupId>com.dvare</groupId>
-        <version>1.0</version>
+        <groupId>org.dvare</groupId>
+        <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -38,19 +38,11 @@
     </licenses>
 
 
-    <distributionManagement>
-        <repository>
-            <id>internal.repo</id>
-            <name>Temporary Staging Repository</name>
-            <url>file://${project.parent.build.directory}/release</url>
-        </repository>
-    </distributionManagement>
 
     <dependencies>
         <dependency>
-            <groupId>com.dvare</groupId>
+            <groupId>org.dvare</groupId>
             <artifactId>rules-core</artifactId>
-            <version>1.0</version>
         </dependency>
 
         <dependency>
@@ -88,22 +80,5 @@
 
     </dependencies>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-deploy-plugin</artifactId>
-                <version>${maven-deploy-plugin.version}</version>
-                <goals>
-                    <goal>deploy</goal>
-                </goals>
-                <configuration>
-                    <altDeploymentRepository>
-                        internal.repo::default::file://${project.parent.build.directory}/release
-                    </altDeploymentRepository>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>

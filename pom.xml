@@ -2,20 +2,20 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.dvare</groupId>
+    <groupId>org.dvare</groupId>
     <artifactId>rules</artifactId>
-    <version>1.0</version>
+    <version>1.0-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
     <name>DVARE RULES</name>
-    <url>http://maven.apache.org</url>
+    <url>http://dvare.org</url>
 
     <developers>
         <developer>
             <id>hammadirshad</id>
             <name>Muhammad Hammad</name>
-            <url></url>
+            <url>http://dvare.org</url>
             <email>hammadirshad046@gmail.com</email>
             <roles>
                 <role>Developer</role>
@@ -46,13 +46,17 @@
 
     <repositories>
         <repository>
-            <id>davre</id>
-            <url>https://raw.githubusercontent.com/dvare/release/dvare/</url>
+            <id>maven-repo</id>
+            <url>http://repo1.maven.org/maven/</url>
         </repository>
 
         <repository>
-            <id>maven-repo</id>
-            <url>http://repo1.maven.org/maven/</url>
+            <id>oss-sonatype-snapshots</id>
+            <name>oss-sonatype-snapshots</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
         </repository>
 
         <repository>
@@ -66,11 +70,28 @@
     </repositories>
 
     <scm>
-        <connection>scm:git:git://github.com/dvare/release.git</connection>
-        <developerConnection>scm:git:git://github.com/dvare/release.git</developerConnection>
-        <url>https://github.com/dvare/release.git</url>
+        <connection>scm:git:git://github.com/dvare/rules.git</connection>
+        <developerConnection>scm:git:git://github.com/dvare/rules.git</developerConnection>
+        <url>https://github.com/dvare/rules.git</url>
     </scm>
 
+
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/dvare/rules/issues</url>
+    </issueManagement>
+
+
+    <distributionManagement>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
 
     <licenses>
         <license>
@@ -79,15 +100,19 @@
         </license>
     </licenses>
 
-
-
     <dependencyManagement>
         <dependencies>
 
             <dependency>
-                <groupId>com.dvare</groupId>
+                <groupId>org.dvare</groupId>
                 <artifactId>dvare</artifactId>
-                <version>1.0</version>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.dvare</groupId>
+                <artifactId>rules-core</artifactId>
+                <version>1.0-SNAPSHOT</version>
             </dependency>
 
             <dependency>
@@ -118,72 +143,24 @@
     </dependencyManagement>
 
     <build>
-
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-deploy-plugin</artifactId>
-                <version>${maven-deploy-plugin.version}</version>
-                <inherited>false</inherited>
-                <goals>
-                    <goal>deploy</goal>
-                </goals>
-                <configuration>
-                    <altDeploymentRepository>
-                        internal.repo::default::file://${project.build.directory}/release
-                    </altDeploymentRepository>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>com.github.github</groupId>
-                <artifactId>site-maven-plugin</artifactId>
-                <version>0.12</version>
-                <inherited>false</inherited>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.eclipse.mylyn.github</groupId>
-                        <artifactId>org.eclipse.egit.github.core</artifactId>
-                        <version>2.1.5</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>com.github.github</groupId>
-                        <artifactId>site-maven-plugin</artifactId>
-                        <version>0.12</version>
-                        <exclusions>
-                            <exclusion>
-                                <groupId>org.eclipse.mylyn.github</groupId>
-                                <artifactId>org.eclipse.egit.github.core</artifactId>
-                            </exclusion>
-                        </exclusions>
-                    </dependency>
-                </dependencies>
-                <configuration>
-                    <message>Maven artifacts for ${project.version}</message>
-                    <noJekyll>true</noJekyll>
-                    <outputDirectory>${project.build.directory}/release</outputDirectory>
-                    <branch>refs/heads/rules</branch>
-                    <includes>
-                        <include>**/*</include>
-                    </includes>
-                    <server>github</server>
-                    <repositoryName>release</repositoryName>
-                    <repositoryOwner>dvare</repositoryOwner>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>site</goal>
-                        </goals>
-                        <phase>site</phase>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-
-
         <pluginManagement>
             <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>${maven-deploy-plugin.version}</version>
+                    <inherited>false</inherited>
+                    <goals>
+                        <goal>deploy</goal>
+                    </goals>
+                    <configuration>
+                        <altDeploymentRepository>
+                            internal.repo::default::file://${project.build.directory}/release
+                        </altDeploymentRepository>
+                    </configuration>
+                </plugin>
+
+
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
@@ -251,8 +228,41 @@
                         </execution>
                     </executions>
                 </plugin>
+
+
+                <plugin>
+                    <groupId>org.sonatype.plugins</groupId>
+                    <artifactId>nexus-staging-maven-plugin</artifactId>
+                    <version>1.6.7</version>
+                    <extensions>true</extensions>
+                    <configuration>
+                        <serverId>ossrh</serverId>
+                        <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                        <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                    </configuration>
+                </plugin>
+
             </plugins>
         </pluginManagement>
     </build>
-
+    <profiles>
+        <profile>
+            <id>release-sign-artifacts</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.5</version>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

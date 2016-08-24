@@ -1,14 +1,15 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
     <parent>
         <artifactId>rules</artifactId>
-        <groupId>com.dvare</groupId>
-        <version>1.0</version>
+        <groupId>org.dvare</groupId>
+        <version>1.0-SNAPSHOT</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
 
     <artifactId>rules-rest</artifactId>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
+
 
     <name>DVARE RULES REST API</name>
     <url>http://maven.apache.org</url>
@@ -26,7 +27,7 @@
     </developers>
 
     <properties>
-        <spring.version>4.3.2.RELEASE</spring.version>
+        <jersey.version>1.19</jersey.version>
     </properties>
 
 
@@ -38,31 +39,42 @@
     </licenses>
 
 
-    <distributionManagement>
-        <repository>
-            <id>internal.repo</id>
-            <name>Temporary Staging Repository</name>
-            <url>file://${project.parent.build.directory}/release</url>
-        </repository>
-    </distributionManagement>
-
     <dependencies>
         <dependency>
-            <groupId>com.dvare</groupId>
+            <groupId>org.dvare</groupId>
             <artifactId>rules-core</artifactId>
-            <version>1.0</version>
         </dependency>
 
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-beans</artifactId>
-            <version>${spring.version}</version>
+            <groupId>org.dvare</groupId>
+            <artifactId>dvare</artifactId>
+        </dependency>
+
+
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib</artifactId>
+            <version>3.2.0</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.0.1</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-            <version>${spring.version}</version>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-server</artifactId>
+            <version>${jersey.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20160810</version>
         </dependency>
 
         <dependency>
@@ -89,21 +101,7 @@
     </dependencies>
 
     <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-deploy-plugin</artifactId>
-                <version>${maven-deploy-plugin.version}</version>
-                <goals>
-                    <goal>deploy</goal>
-                </goals>
-                <configuration>
-                    <altDeploymentRepository>
-                        internal.repo::default::file://${project.parent.build.directory}/release
-                    </altDeploymentRepository>
-                </configuration>
-            </plugin>
-        </plugins>
+        <finalName>rules-rest</finalName>
     </build>
 
 </project>
