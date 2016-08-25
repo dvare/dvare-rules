@@ -3,22 +3,31 @@ package org.dvare.rest.service;
 
 import org.dvare.rest.registry.RuleEngineRegistry;
 import org.dvare.rest.ruleengine.RestRuleEngine;
-import org.json.JSONObject;
+import org.dvare.rest.ruleengine.RuleStructure;
+
+import java.util.List;
+import java.util.Map;
 
 public class RuleEngineService {
 
+    RuleEngineRegistry ruleEngineRegistry = null;
 
-    public String fireRules(final String ruleEngine) {
-        RuleEngineRegistry ruleEngineRegistry = RuleEngineRegistry.INSTANCE;
+    public RuleEngineService(RuleEngineRegistry ruleEngineRegistry) {
+        this.ruleEngineRegistry = ruleEngineRegistry;
+    }
+
+
+    public Map<String, Boolean> fireRules(final String ruleEngine) {
+
         RestRuleEngine restRuleEngine = ruleEngineRegistry.getRuleEngine(ruleEngine);
         if (restRuleEngine != null) {
-            restRuleEngine.fireRules();
+            return restRuleEngine.fireRules();
         }
         return null;
     }
 
     public void unregisterRule(final String ruleEngine, final String ruleId) {
-        RuleEngineRegistry ruleEngineRegistry = RuleEngineRegistry.INSTANCE;
+
         RestRuleEngine restRuleEngine = ruleEngineRegistry.getRuleEngine(ruleEngine);
         if (restRuleEngine != null) {
             restRuleEngine.unregisterRule(ruleId);
@@ -27,7 +36,7 @@ public class RuleEngineService {
     }
 
     public void clearRules(String ruleEngine) {
-        RuleEngineRegistry ruleEngineRegistry = RuleEngineRegistry.INSTANCE;
+
         RestRuleEngine restRuleEngine = ruleEngineRegistry.getRuleEngine(ruleEngine);
         if (restRuleEngine != null) {
             restRuleEngine.clearRules();
@@ -35,15 +44,17 @@ public class RuleEngineService {
     }
 
 
-    private RestRuleEngine getRuleEngine(final String ruleString) {
-        if (ruleString != null && !ruleString.isEmpty()) {
-            JSONObject jsonObject = new JSONObject(ruleString);
-            String ruleEngine = jsonObject.getString("ruleEngine");
-            RuleEngineRegistry ruleEngineRegistry = RuleEngineRegistry.INSTANCE;
-            RestRuleEngine restRuleEngine = ruleEngineRegistry.getRuleEngine(ruleEngine);
-            return restRuleEngine;
-        }
-        return null;
+    public List<RuleStructure> getRules(String ruleEngine) {
+        RestRuleEngine restRuleEngine = ruleEngineRegistry.getRuleEngine(ruleEngine);
+        List<RuleStructure> rules = restRuleEngine.getRules();
+        return rules;
+    }
+
+
+    public RuleStructure getRule(String ruleEngine, String ruleId) {
+        RestRuleEngine restRuleEngine = ruleEngineRegistry.getRuleEngine(ruleEngine);
+        RuleStructure rule = restRuleEngine.getRule(ruleId);
+        return rule;
     }
 
 

@@ -1,6 +1,8 @@
 package org.dvare.rest.ruleengine;
 
 
+import org.dvare.binding.data.DataRow;
+import org.dvare.binding.model.TypeBinding;
 import org.dvare.ruleengine.TextualRuleEngine;
 
 import java.util.*;
@@ -18,13 +20,15 @@ public class RestRuleEngine {
         this.textualRuleEngine = textualRuleEngine;
     }
 
-    public String registerRule(String ruleName, Integer rulePriority, String rule, Object model) {
-        String ruleId = ruleName + rules.size();
+    public String registerRule(String ruleName, Integer rulePriority, String rule, TypeBinding typeBinding, DataRow dataRow) {
+        String ruleId = name + (rules.size() + 1);
         RuleStructure ruleStructure = new RuleStructure();
         ruleStructure.ruleId = ruleId;
+        ruleStructure.name = ruleName;
         ruleStructure.rule = rule;
         ruleStructure.priority = rulePriority;
-        ruleStructure.model = model;
+        ruleStructure.typeBinding = typeBinding;
+        ruleStructure.dataRow = dataRow;
         rules.put(ruleId, ruleStructure);
         return ruleId;
     }
@@ -35,14 +39,14 @@ public class RestRuleEngine {
         }
     }
 
-    public Object getRule(String ruleId) {
+    public RuleStructure getRule(String ruleId) {
         if (rules.containsKey(ruleId)) {
-            return rules.get(ruleId).rule;
+            return rules.get(ruleId);
         }
         return null;
     }
 
-    public List<Object> getRules() {
+    public List<RuleStructure> getRules() {
         return new ArrayList<>(rules.values());
     }
 
@@ -58,7 +62,7 @@ public class RestRuleEngine {
 
         for (RuleStructure rule : ruleSet) {
 
-            Boolean result = textualRuleEngine.evaluate(rule.rule, rule.model.getClass(), rule.model);
+            Boolean result = textualRuleEngine.evaluate(rule.rule, rule.typeBinding, rule.dataRow);
             results.put(rule.ruleId, result);
         }
 

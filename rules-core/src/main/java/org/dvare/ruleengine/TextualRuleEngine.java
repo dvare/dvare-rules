@@ -25,6 +25,7 @@ package org.dvare.ruleengine;
 
 
 import org.apache.log4j.Logger;
+import org.dvare.binding.model.TypeBinding;
 import org.dvare.binding.rule.RuleBinding;
 import org.dvare.config.RuleConfiguration;
 import org.dvare.exceptions.interpreter.InterpretException;
@@ -56,6 +57,18 @@ public class TextualRuleEngine {
             }
 
             return evaluate(rule.toString(), type, object);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
+        return false;
+    }
+
+    public boolean evaluate(String rule, TypeBinding typeBinding, Object object) {
+        try {
+            Expression expression = configuration.getParser().fromString(rule, typeBinding);
+            RuleBinding ruleExpression = new RuleBinding(expression);
+            ruleExpression.setRawExpression(rule);
+            return evaluate(ruleExpression, object);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
