@@ -1,9 +1,10 @@
 *.class
 *.jar
-/target/
+*/target
+/target
 /.DS_Store
-/.idea/
-/.rules.iml
+/.idea
 /*.iml
-rules.iml
-/Extra
+*/*.iml
+/smaple
+
