@@ -3,13 +3,18 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.dvare</groupId>
-    <artifactId>rules</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <artifactId>dvare-rules</artifactId>
+    <version>1.0</version>
 
     <packaging>pom</packaging>
 
     <name>DVARE RULES</name>
     <url>http://dvare.org</url>
+
+    <description>DVARE RULES is business rule engine built DVARE Framework on which provides an interface for embedding
+        POJO rules in your application. You can turn your POJOs into business rules with a couple of intuitive
+        annotations and you can evaluate both text and java based rules.
+    </description>
 
     <developers>
         <developer>
@@ -25,9 +30,10 @@
 
 
     <modules>
-        <module>rules-core</module>
-        <module>rules-spring</module>
-        <module>rules-rest</module>
+        <module>dvare-rules-core</module>
+        <module>dvare-rules-spring</module>
+        <module>dvare-rules-rest</module>
+        <module>dvare-rules-rest-war</module>
     </modules>
 
     <properties>
@@ -41,7 +47,9 @@
         <maven-javadoc-plugin.version>2.10.4</maven-javadoc-plugin.version>
         <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
         <maven-jar-plugin.version>3.0.2</maven-jar-plugin.version>
+        <maven-war-plugin.version>2.6</maven-war-plugin.version>
         <maven-deploy-plugin.version>2.8.2</maven-deploy-plugin.version>
+        <dvare.framework.version>1.0</dvare.framework.version>
     </properties>
 
     <repositories>
@@ -53,15 +61,6 @@
         <repository>
             <id>oss-sonatype-snapshots</id>
             <name>oss-sonatype-snapshots</name>
-            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-
-        <repository>
-            <id>oss-sonatype</id>
-            <name>oss-sonatype</name>
             <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
             <snapshots>
                 <enabled>true</enabled>
@@ -105,14 +104,20 @@
 
             <dependency>
                 <groupId>org.dvare</groupId>
-                <artifactId>dvare</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <artifactId>dvare-framework</artifactId>
+                <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.dvare</groupId>
-                <artifactId>rules-core</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <artifactId>dvare-rules-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.dvare</groupId>
+                <artifactId>dvare-rules-rest</artifactId>
+                <version>${project.version}</version>
             </dependency>
 
             <dependency>
@@ -143,6 +148,22 @@
     </dependencyManagement>
 
     <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -245,24 +266,5 @@
             </plugins>
         </pluginManagement>
     </build>
-    <profiles>
-        <profile>
-            <id>release-sign-artifacts</id>
-            <activation>
-                <property>
-                    <name>performRelease</name>
-                    <value>true</value>
-                </property>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.5</version>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
+
 </project>

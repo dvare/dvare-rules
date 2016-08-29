@@ -11,24 +11,23 @@ DVARE Rules is rule engine built on dvare
 ```xml
 <repository>
     <id>davre</id>
-    <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+    <url>https://oss.sonatype.org/content/groups/staging/</url>
 </repository>
-
 <dependencies>
         <dependency>
             <groupId>org.dvare</groupId>
-            <artifactId>rules-core</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <artifactId>dvare-rules-core</artifactId>
+            <version>1.0</version>
         </dependency>
         <dependency>
             <groupId>org.dvare</groupId>
-            <artifactId>rules-spring</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <artifactId>dvare-rules-spring</artifactId>
+            <version>1.0</version>
         </dependency>    
         <dependency>
             <groupId>org.dvare</groupId>
-            <artifactId>rules-rest</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <artifactId>dvare-rules-rest</artifactId>
+            <version>1.0</version>
         </dependency>              
 <dependencies>
 ```

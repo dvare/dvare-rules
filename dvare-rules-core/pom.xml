@@ -1,0 +1,76 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>dvare-rules</artifactId>
+        <groupId>org.dvare</groupId>
+        <version>1.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>dvare-rules-core</artifactId>
+    <packaging>jar</packaging>
+
+    <name>DVARE RULES CORE</name>
+    <url>http://dvare.org</url>
+    <description>DVARE RULES is business rule engine built DVARE Framework on which provides an interface for embedding
+        POJO rules in your application. You can turn your POJOs into business rules with a couple of intuitive
+        annotations and you can evaluate both text and java based rules.
+    </description>
+
+    <developers>
+        <developer>
+            <id>hammadirshad</id>
+            <name>Muhammad Hammad</name>
+            <url>https://github.com/hammadirshad</url>
+            <email>hammadirshad046@gmail.com</email>
+            <roles>
+                <role>Developer</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <properties>
+        <spring.version>4.3.2.RELEASE</spring.version>
+    </properties>
+
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://opensource.org/licenses/mit-license.php</url>
+        </license>
+    </licenses>
+
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.dvare</groupId>
+            <artifactId>dvare-framework</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+
+    </dependencies>
+
+
+</project>
