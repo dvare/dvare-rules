@@ -1,10 +1,10 @@
 ## What is DVARE RULES [![Build Status](https://travis-ci.org/dvare/rules.svg?branch=master)](https://travis-ci.org/dvare/rules)
 DVARE Rules is rule engine built on dvare  
-[https://dvare.github.io/](https://dvare.github.io/)
+[https://dvare.org/](https://dvare.org/)
 
 ## Current version
 
-* The current  version is `1.0-SNAPSHOT` 
+* The current  version is `1.0` 
 
  you need to add the following maven repository in your `pom.xml`:
 
