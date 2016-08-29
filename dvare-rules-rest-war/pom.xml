@@ -10,7 +10,7 @@
     <artifactId>dvare-rules-rest-war</artifactId>
     <packaging>war</packaging>
 
-    <name>DVARE RULES REST API</name>
+    <name>DVARE RULES REST API WAR</name>
     <url>http://dvare.org</url>
 
     <developers>
