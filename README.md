@@ -1,6 +1,7 @@
 ## What is DVARE RULES [![Build Status](https://travis-ci.org/dvare/rules.svg?branch=master)](https://travis-ci.org/dvare/rules)
-DVARE Rules is rule engine built on dvare  
-[https://dvare.org/](https://dvare.org/)
+DVARE RULES is business rule engine built DVARE Framework on which provides an interface for embedding
+        POJO rules in your application. You can turn your POJOs into business rules with a couple of intuitive
+        annotations and you can evaluate both text and java based rules.[https://dvare.org/](https://dvare.org/)
 
 ## Current version
 
