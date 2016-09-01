@@ -21,55 +21,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 
-package org.dvare.spring.test;
+package org.dvare.ruleengine.structure;
 
+import java.lang.reflect.Method;
 
-import org.apache.log4j.Logger;
-import org.dvare.annotations.*;
-import org.dvare.ruleengine.TextualRuleEngine;
-import org.dvare.spring.test.model.Person;
+public class MethodStructure implements Comparable<MethodStructure> {
+    public Method method;
+    public Integer order;
 
-@Rule(name = "textRule", priority = 0)
-public class AnnotatedTextualRuleTest {
-    Logger logger = Logger.getLogger(AnnotatedTextualRuleTest.class);
-
-    private String rule;
-    private Person person;
-
-    @Condition(type = ConditionType.TEXT)
-    public void condition(TextualRuleEngine textualRuleEngine) {
-        textualRuleEngine.register(rule, Person.class, person);
-    }
-
-
-    @Before
-    public void beforeCondition() {
-        logger.info("Before Condition ");
-    }
-
-    @After
-    public void afterCondition() {
-        logger.info("After Condition ");
-
-    }
-
-
-    @Success
-    public void success() {
-        logger.info("Rule Successfully Run");
-    }
-
-    @Fail
-    public void fail() {
-        logger.error("Rule Failed");
-    }
-
-
-    public void setRule(String rule) {
-        this.rule = rule;
-    }
-
-    public void setPerson(Person person) {
-        this.person = person;
+    @Override
+    public int compareTo(MethodStructure other) {
+        return this.order.compareTo(other.order);
     }
 }
+

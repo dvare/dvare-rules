@@ -24,26 +24,28 @@ THE SOFTWARE.*/
 package org.dvare.spring;
 
 import junit.framework.TestCase;
-import org.dvare.config.RuleConfiguration;
+import org.dvare.api.RuleEngineBuilder;
 import org.dvare.exceptions.rule.IllegalRuleException;
 import org.dvare.ruleengine.RuleEngine;
-import org.dvare.ruleengine.TextualRuleEngine;
+import org.dvare.spring.test.AggregationRuleTest;
 import org.dvare.spring.test.AnnotatedFileRuleTest;
 import org.dvare.spring.test.AnnotatedRuleTest;
 import org.dvare.spring.test.AnnotatedTextualRuleTest;
-import org.dvare.spring.test.Person;
+import org.dvare.spring.test.model.Person;
+import org.dvare.spring.test.model.Student;
 import org.junit.Test;
 
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AnnotatedTest extends TestCase {
     @Test
     public void testApp() throws IllegalRuleException {
 
-        RuleConfiguration configuration = new RuleConfiguration();
-        TextualRuleEngine textualRuleEngine = new TextualRuleEngine(configuration);
-        RuleEngine ruleEngine = new RuleEngine(textualRuleEngine);
+
+        RuleEngine ruleEngine = new RuleEngineBuilder().build();
 
         AnnotatedRuleTest ruleTest = new AnnotatedRuleTest();
         ruleTest.setAge(25);
@@ -58,7 +60,6 @@ public class AnnotatedTest extends TestCase {
         AnnotatedTextualRuleTest textRuleTest = new AnnotatedTextualRuleTest();
         textRuleTest.setRule("age between [ 20 , 30 ] And title = 'Mr' And gender = 'Male'");
         textRuleTest.setPerson(male);
-
         ruleEngine.registerRule(textRuleTest);
 
 
@@ -76,6 +77,49 @@ public class AnnotatedTest extends TestCase {
 
         ruleEngine.fireRules();
 
+
+    }
+
+
+    @Test
+    public void testApp2() throws IllegalRuleException {
+
+
+        RuleEngine ruleEngine = new RuleEngineBuilder().build();
+
+        List<Object> students = new ArrayList<>();
+
+        Student student1 = new Student();
+        student1.setName("student1");
+        student1.setAge(20);
+        student1.setSgpa(2.4f);
+        students.add(student1);
+
+        Student student2 = new Student();
+        student2.setName("student2");
+        student2.setAge(25);
+        student2.setSgpa(2.8f);
+        students.add(student2);
+
+        Student student3 = new Student();
+        student3.setName("student3");
+        student3.setAge(30);
+        student3.setSgpa(3.4f);
+        students.add(student3);
+
+
+        AggregationRuleTest fileRuleTest = new AggregationRuleTest();
+        URL url = this.getClass().getClassLoader().getResource("rules/student_aggregation_rule.dvr");
+        fileRuleTest.setAggregationRule(new File(url.getFile()));
+        fileRuleTest.setData(students);
+
+        String ruleId = ruleEngine.registerRule(fileRuleTest);
+
+
+        ruleEngine.fireRules();
+
+        Object result = ruleEngine.getResult(ruleId);
+        System.out.println(result);
 
     }
 }

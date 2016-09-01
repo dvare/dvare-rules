@@ -21,18 +21,22 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 
-package org.dvare.ruleengine;
+package org.dvare.ruleengine.parser;
 
 import org.apache.commons.lang3.reflect.MethodUtils;
 import org.dvare.annotations.ConditionType;
 import org.dvare.rule.BasicRule;
 import org.dvare.rule.TextualRule;
+import org.dvare.ruleengine.TextualRuleEngine;
+import org.dvare.ruleengine.structure.ConditionStructure;
+import org.dvare.ruleengine.structure.MethodStructure;
+import org.dvare.ruleengine.structure.RuleStructure;
 
 import java.lang.reflect.Method;
 
-class RuleParser {
+public class RuleParser {
 
-    RuleStructure parseRule(Object rule, int size) {
+    public RuleStructure parseRule(Object rule, int size) {
 
 
         try {

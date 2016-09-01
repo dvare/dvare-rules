@@ -23,23 +23,31 @@ THE SOFTWARE.*/
 
 package org.dvare.spring.test;
 
-
 import org.apache.log4j.Logger;
 import org.dvare.annotations.*;
-import org.dvare.ruleengine.TextualRuleEngine;
-import org.dvare.spring.test.model.Person;
+import org.dvare.ruleengine.AggregationRuleEngine;
+import org.dvare.spring.test.model.Student;
+import org.dvare.spring.test.model.StudentAggregation;
 
 import java.io.File;
+import java.util.List;
 
-@Rule(name = "fileRule", priority = 0)
-public class AnnotatedFileRuleTest {
-    Logger logger = Logger.getLogger(AnnotatedFileRuleTest.class);
-    private File rule;
-    private Person person;
+@Rule(name = "firstRule", priority = 0)
+public class AggregationRuleTest {
+    Logger logger = Logger.getLogger(AggregationRuleTest.class);
+    private File aggregationRule;
+    private List<Object> data;
+    private StudentAggregation result = new StudentAggregation();
 
-    @Condition(type = ConditionType.TEXT)
+
+ /*   @Condition(type = ConditionType.TEXT)
     public void condition(TextualRuleEngine textualRuleEngine) {
-        textualRuleEngine.register(rule, Person.class, person);
+        //  textualRuleEngine.evaluate(rule, Person.class, person);
+    }*/
+
+    @Aggregation
+    public void aggregation(AggregationRuleEngine aggregationRuleEngine) {
+        aggregationRuleEngine.register(aggregationRule, StudentAggregation.class, Student.class, result, data);
     }
 
 
@@ -51,9 +59,7 @@ public class AnnotatedFileRuleTest {
     @After
     public void afterCondition() {
         logger.info("After Condition ");
-
     }
-
 
     @Success
     public void success() {
@@ -65,19 +71,27 @@ public class AnnotatedFileRuleTest {
         logger.error("Rule Failed");
     }
 
-    public File getRule() {
-        return rule;
+    public File getAggregationRule() {
+        return aggregationRule;
     }
 
-    public void setRule(File rule) {
-        this.rule = rule;
+    public void setAggregationRule(File aggregationRule) {
+        this.aggregationRule = aggregationRule;
     }
 
-    public Person getPerson() {
-        return person;
+    public List<Object> getData() {
+        return data;
     }
 
-    public void setPerson(Person person) {
-        this.person = person;
+    public void setData(List<Object> data) {
+        this.data = data;
+    }
+
+    public StudentAggregation getResult() {
+        return result;
+    }
+
+    public void setResult(StudentAggregation result) {
+        this.result = result;
     }
 }

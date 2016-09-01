@@ -21,55 +21,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 
-package org.dvare.spring.test;
+package org.dvare.annotations;
 
 
-import org.apache.log4j.Logger;
-import org.dvare.annotations.*;
-import org.dvare.ruleengine.TextualRuleEngine;
-import org.dvare.spring.test.model.Person;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-@Rule(name = "textRule", priority = 0)
-public class AnnotatedTextualRuleTest {
-    Logger logger = Logger.getLogger(AnnotatedTextualRuleTest.class);
-
-    private String rule;
-    private Person person;
-
-    @Condition(type = ConditionType.TEXT)
-    public void condition(TextualRuleEngine textualRuleEngine) {
-        textualRuleEngine.register(rule, Person.class, person);
-    }
-
-
-    @Before
-    public void beforeCondition() {
-        logger.info("Before Condition ");
-    }
-
-    @After
-    public void afterCondition() {
-        logger.info("After Condition ");
-
-    }
-
-
-    @Success
-    public void success() {
-        logger.info("Rule Successfully Run");
-    }
-
-    @Fail
-    public void fail() {
-        logger.error("Rule Failed");
-    }
-
-
-    public void setRule(String rule) {
-        this.rule = rule;
-    }
-
-    public void setPerson(Person person) {
-        this.person = person;
-    }
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.METHOD})
+public @interface Result {
 }

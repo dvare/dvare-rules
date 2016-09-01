@@ -1,6 +1,7 @@
 package org.dvare.api;
 
 import org.dvare.config.RuleConfiguration;
+import org.dvare.ruleengine.AggregationRuleEngine;
 import org.dvare.ruleengine.RuleEngine;
 import org.dvare.ruleengine.TextualRuleEngine;
 
@@ -31,7 +32,8 @@ public class RuleEngineBuilder {
     public RuleEngine build() {
         RuleConfiguration ruleConfiguration = new RuleConfiguration(functionPackages);
         TextualRuleEngine textualRuleEngine = new TextualRuleEngine(ruleConfiguration);
-        RuleEngine ruleEngine = new RuleEngine(textualRuleEngine);
+        AggregationRuleEngine aggregationRuleEngine = new AggregationRuleEngine(ruleConfiguration);
+        RuleEngine ruleEngine = new RuleEngine(textualRuleEngine, aggregationRuleEngine);
         ruleEngine.setSatisfyCondition(satisfyCondition);
         ruleEngine.setStopOnFail(stopOnFail);
         return ruleEngine;

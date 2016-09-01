@@ -21,35 +21,25 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 
-package org.dvare.ruleengine;
+package org.dvare.ruleengine.structure;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class RuleStructure implements Comparable<RuleStructure> {
+    public String ruleId;
+    public Object rule;
+    public Integer priority;
+    public List<ConditionStructure> conditions = new ArrayList<>();
+    public MethodStructure aggregation;
+    public List<MethodStructure> successMethods = new ArrayList<>();
+    public List<MethodStructure> failMethods = new ArrayList<>();
+    public List<MethodStructure> beforeMethods = new ArrayList<>();
+    public List<MethodStructure> afterMethods = new ArrayList<>();
 
 
-public class RuleResult {
-    private String ruleId;
-    private Object rule;
-    private Boolean result;
-
-    public String getRuleId() {
-        return ruleId;
-    }
-
-    public void setRuleId(String ruleId) {
-        this.ruleId = ruleId;
-    }
-
-    public Object getRule() {
-        return rule;
-    }
-
-    public void setRule(Object rule) {
-        this.rule = rule;
-    }
-
-    public Boolean getResult() {
-        return result;
-    }
-
-    public void setResult(Boolean result) {
-        this.result = result;
+    @Override
+    public int compareTo(RuleStructure other) {
+        return this.priority.compareTo(other.priority);
     }
 }

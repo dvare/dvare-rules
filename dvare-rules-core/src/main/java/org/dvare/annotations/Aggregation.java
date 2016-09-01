@@ -21,19 +21,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 
-package org.dvare.ruleengine;
+package org.dvare.annotations;
 
-import org.dvare.annotations.ConditionType;
 
-import java.lang.reflect.Method;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-class ConditionStructure implements Comparable<ConditionStructure> {
-    Method condition;
-    Integer order;
-    ConditionType conditionType;
-
-    @Override
-    public int compareTo(ConditionStructure other) {
-        return this.order.compareTo(other.order);
-    }
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.METHOD})
+public @interface Aggregation {
 }

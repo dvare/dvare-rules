@@ -30,19 +30,31 @@ import org.dvare.binding.rule.RuleBinding;
 import org.dvare.config.RuleConfiguration;
 import org.dvare.exceptions.interpreter.InterpretException;
 import org.dvare.expression.Expression;
+import org.dvare.parser.ExpressionParser;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 
-public class TextualRuleEngine {
+public class TextualRuleEngine implements Cloneable {
     Logger logger = Logger.getLogger(TextualRuleEngine.class);
     RuleConfiguration configuration;
+
+
+    private RuleBinding ruleBinding;
+    private Object dataBinding;
+    private TypeBinding typeBinding;
 
     public TextualRuleEngine(RuleConfiguration configuration) {
         this.configuration = configuration;
     }
 
+    @Override
+    protected TextualRuleEngine clone() throws CloneNotSupportedException {
+        return (TextualRuleEngine) super.clone();
+    }
+
+    @Deprecated
     public boolean evaluate(File rulefile, Class type, Object object) {
 
         try {
@@ -63,6 +75,7 @@ public class TextualRuleEngine {
         return false;
     }
 
+    @Deprecated
     public boolean evaluate(String rule, TypeBinding typeBinding, Object object) {
         try {
             Expression expression = configuration.getParser().fromString(rule, typeBinding);
@@ -75,23 +88,64 @@ public class TextualRuleEngine {
         return false;
     }
 
+    @Deprecated
     public boolean evaluate(String rule, Class type, Object object) {
-        try {
-            Expression expression = configuration.getParser().fromString(rule, type);
-            RuleBinding ruleExpression = new RuleBinding(expression);
-            ruleExpression.setRawExpression(rule);
-            return evaluate(ruleExpression, object);
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-        }
-        return false;
+        TypeBinding typeBinding = ExpressionParser.translate(type);
+        return evaluate(rule, typeBinding, object);
     }
 
 
+    @Deprecated
     public boolean evaluate(RuleBinding rule, Object object) throws InterpretException {
         boolean result = configuration.getEvaluator().evaluate(rule, object);
         return result;
     }
 
+
+    public void register(File rulefile, Class type, Object object) {
+
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(rulefile));
+
+            StringBuilder rule = new StringBuilder();
+            String row;
+
+            while ((row = br.readLine()) != null) {
+                rule.append(row.trim());
+                rule.append(" ");
+            }
+
+            register(rule.toString(), type, object);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
+
+    }
+
+
+    public void register(String rule, Class type, Object object) {
+
+        TypeBinding typeBinding = ExpressionParser.translate(type);
+        register(rule, typeBinding, object);
+
+    }
+
+    public void register(String rule, TypeBinding typeBinding, Object dataBinding) {
+        try {
+            this.dataBinding = dataBinding;
+            this.typeBinding = typeBinding;
+            Expression expression = configuration.getParser().fromString(rule, typeBinding);
+            ruleBinding = new RuleBinding(expression);
+            ruleBinding.setRawExpression(rule);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
+    }
+
+
+    public boolean evaluate() throws InterpretException {
+        boolean result = configuration.getEvaluator().evaluate(ruleBinding, dataBinding);
+        return result;
+    }
 
 }

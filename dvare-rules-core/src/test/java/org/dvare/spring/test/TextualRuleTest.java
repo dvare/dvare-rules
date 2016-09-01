@@ -27,6 +27,7 @@ package org.dvare.spring.test;
 import org.apache.log4j.Logger;
 import org.dvare.rule.TextualRule;
 import org.dvare.ruleengine.TextualRuleEngine;
+import org.dvare.spring.test.model.Person;
 
 
 public class TextualRuleTest implements TextualRule {
@@ -42,11 +43,10 @@ public class TextualRuleTest implements TextualRule {
 
 
     @Override
-    public boolean condition(TextualRuleEngine textualRuleEngine) {
-        boolean result = textualRuleEngine.evaluate(rule, Person.class, person);
-        return result;
-    }
+    public void condition(TextualRuleEngine textualRuleEngine) {
+        textualRuleEngine.register(rule, Person.class, person);
 
+    }
 
     @Override
     public void success() {

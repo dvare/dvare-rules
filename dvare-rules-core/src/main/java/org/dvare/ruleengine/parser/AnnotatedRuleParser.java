@@ -21,18 +21,22 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 
-package org.dvare.ruleengine;
+package org.dvare.ruleengine.parser;
 
 import org.dvare.annotations.*;
 import org.dvare.exceptions.rule.ConditionNotFoundException;
 import org.dvare.exceptions.rule.ConditionParamNotFoundException;
+import org.dvare.ruleengine.TextualRuleEngine;
+import org.dvare.ruleengine.structure.ConditionStructure;
+import org.dvare.ruleengine.structure.MethodStructure;
+import org.dvare.ruleengine.structure.RuleStructure;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 
-class AnnotatedRuleParser {
+public class AnnotatedRuleParser {
 
-    RuleStructure parseRule(Object rule, int size) {
+    public RuleStructure parseRule(Object rule, int size) {
 
         Rule ruleDetails = rule.getClass().getAnnotation(Rule.class);
         String ruleId = ruleDetails.name() + size;
@@ -51,6 +55,11 @@ class AnnotatedRuleParser {
                     conditionStructure.condition = method;
                     conditionStructure.conditionType = condition.type();
                     ruleStructure.conditions.add(conditionStructure);
+                } else if (method.isAnnotationPresent(Aggregation.class)) {
+                    Aggregation aggregation = method.getAnnotation(Aggregation.class);
+                    MethodStructure methodStructure = new MethodStructure();
+                    methodStructure.method = method;
+                    ruleStructure.aggregation = methodStructure;
                 } else if (method.isAnnotationPresent(Before.class)) {
                     Before before = method.getAnnotation(Before.class);
                     MethodStructure methodStructure = new MethodStructure();
@@ -87,7 +96,7 @@ class AnnotatedRuleParser {
     }
 
 
-    void validateRule(Object rule) throws ConditionNotFoundException, ConditionParamNotFoundException {
+    public void validateRule(Object rule) throws ConditionNotFoundException, ConditionParamNotFoundException {
 
         boolean conditionFound = false;
         for (Method method : rule.getClass().getMethods()) {
@@ -96,29 +105,35 @@ class AnnotatedRuleParser {
                 Condition condition = (Condition) method.getAnnotation(Condition.class);
                 ConditionType conditionType = condition.type();
 
-                if (!method.getReturnType().equals(Boolean.class) && !method.getReturnType().equals(boolean.class)) {
-                    throw new ConditionNotFoundException("Method with Condition Type Code must return Boolean value ");
-                }
 
                 if (conditionType.equals(ConditionType.TEXT)) {
                     if (method.getParameters() != null && method.getParameters().length > 0) {
 
                         Parameter parameter = method.getParameters()[0];
                         if (!parameter.getType().equals(TextualRuleEngine.class)) {
-                            throw new ConditionParamNotFoundException("Method Condition Type DVARE not contain TextualRuleEngine param");
+                            throw new ConditionParamNotFoundException(" Condition Type TEXT not contain TextualRuleEngine param");
                         }
                     } else {
-                        throw new ConditionParamNotFoundException("Method Condition Type DVARE not contain TextualRuleEngine param ");
+                        throw new ConditionParamNotFoundException("Condition Type TEXT not contain TextualRuleEngine param ");
+                    }
+                } else if (conditionType.equals(ConditionType.CODE)) {
+
+                    if (!method.getReturnType().equals(Boolean.class) && !method.getReturnType().equals(boolean.class)) {
+                        throw new ConditionNotFoundException("Condition Type Code must return Boolean value ");
                     }
                 }
+
+                conditionFound = true;
+            } else if (method.isAnnotationPresent(Aggregation.class)) {
                 conditionFound = true;
             }
+
 
         }
 
 
         if (!conditionFound) {
-            throw new ConditionNotFoundException("Passed RuleBinding not contain any  Method  annotated with @Condition");
+            throw new ConditionNotFoundException(" Rule not contain any Method annotated with @Condition or @Aggregation");
         }
 
     }
