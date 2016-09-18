@@ -97,8 +97,11 @@ public class TextualRuleEngine implements Cloneable {
 
     @Deprecated
     public boolean evaluate(RuleBinding rule, Object object) throws InterpretException {
-        boolean result = configuration.getEvaluator().evaluate(rule, object);
-        return result;
+        Object result = configuration.getEvaluator().evaluate(rule, object);
+        if (result instanceof Boolean) {
+            return (Boolean) result;
+        }
+        return false;
     }
 
 
@@ -144,8 +147,11 @@ public class TextualRuleEngine implements Cloneable {
 
 
     public boolean evaluate() throws InterpretException {
-        boolean result = configuration.getEvaluator().evaluate(ruleBinding, dataBinding);
-        return result;
+        Object result = configuration.getEvaluator().evaluate(ruleBinding, dataBinding);
+        if (result instanceof Boolean) {
+            return (Boolean) result;
+        }
+        return false;
     }
 
 }

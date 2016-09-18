@@ -90,7 +90,7 @@ public class AggregationRuleEngine implements Cloneable {
             this.dataset = dataset;
             ruleBindings = new ArrayList<>();
             for (String rule : rules) {
-                Expression expression = configuration.getAggregationParser().fromString(rule, vTypeBinding, aTypeBinding);
+                Expression expression = configuration.getParser().fromString(rule, vTypeBinding, aTypeBinding);
                 RuleBinding ruleBinding = new RuleBinding(expression);
                 ruleBinding.setRawExpression(rule);
                 ruleBindings.add(ruleBinding);
@@ -111,7 +111,7 @@ public class AggregationRuleEngine implements Cloneable {
             for (String rule : rules) {
                 TypeBinding vTypeBinding = ExpressionParser.translate(vtype);
                 TypeBinding aTypeBinding = ExpressionParser.translate(atype);
-                Expression expression = configuration.getAggregationParser().fromString(rule, aTypeBinding, vTypeBinding);
+                Expression expression = configuration.getParser().fromString(rule, aTypeBinding, vTypeBinding);
                 RuleBinding ruleBinding = new RuleBinding(expression);
                 ruleBinding.setRawExpression(rule);
                 ruleBindings.add(ruleBinding);
@@ -125,7 +125,7 @@ public class AggregationRuleEngine implements Cloneable {
 
 
     public Object evaluate() throws InterpretException {
-        Object result = configuration.getAggregationEvaluator().evaluate(ruleBindings, object, dataset);
+        Object result = configuration.getEvaluator().evaluate(ruleBindings, object, dataset);
         return result;
     }
 
