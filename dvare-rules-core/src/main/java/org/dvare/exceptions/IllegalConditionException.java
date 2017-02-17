@@ -21,29 +21,27 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 
-package org.dvare.spring.test;
+package org.dvare.exceptions;
 
 
-import junit.framework.TestCase;
-import org.dvare.exceptions.rule.IllegalRuleException;
-import org.dvare.ruleengine.RuleEngine;
-import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-public class SpringXML extends TestCase {
-
-    @Test
-    public void testApp() throws IllegalRuleException {
-        ApplicationContext context =
-                new ClassPathXmlApplicationContext("application-context.xml");
-        RuleEngine ruleEngine = context.getBean(RuleEngine.class);
-
-        FirstRule ruleTest = new FirstRule();
-        ruleTest.setAge(25);
-        ruleEngine.registerRule(ruleTest);
-
-        ruleEngine.fireRules();
+public class IllegalConditionException extends Exception {
+    public IllegalConditionException() {
     }
 
+    public IllegalConditionException(String message) {
+        super(message);
+    }
+
+    public IllegalConditionException(Throwable cause) {
+        super(cause);
+    }
+
+    public IllegalConditionException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public IllegalConditionException(String message, Throwable cause,
+                                     boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
+    }
 }

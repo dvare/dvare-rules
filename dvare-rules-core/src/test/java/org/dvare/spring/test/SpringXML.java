@@ -21,17 +21,29 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 
-package org.dvare.spring;
+package org.dvare.spring.test;
 
 
-import org.dvare.spring.test.SpringXML;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
+import junit.framework.TestCase;
+import org.dvare.exceptions.IllegalRuleException;
+import org.dvare.ruleengine.RuleEngine;
+import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+public class SpringXML extends TestCase {
 
-@RunWith(Suite.class)
-@Suite.SuiteClasses({SpringXML.class})
-public class AppTest {
+    @Test
+    public void testApp() throws IllegalRuleException {
+        ApplicationContext context =
+                new ClassPathXmlApplicationContext("application-context.xml");
+        RuleEngine ruleEngine = context.getBean(RuleEngine.class);
 
+        FirstRule ruleTest = new FirstRule();
+        ruleTest.setAge(25);
+        ruleEngine.registerRule(ruleTest);
+
+        ruleEngine.fireRules();
+    }
 
 }

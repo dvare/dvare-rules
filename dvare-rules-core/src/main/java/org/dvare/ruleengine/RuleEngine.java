@@ -26,7 +26,8 @@ package org.dvare.ruleengine;
 import org.apache.log4j.Logger;
 import org.dvare.annotations.ConditionType;
 import org.dvare.annotations.Rule;
-import org.dvare.exceptions.rule.IllegalRuleException;
+import org.dvare.binding.data.InstancesBinding;
+import org.dvare.exceptions.IllegalRuleException;
 import org.dvare.rule.BasicRule;
 import org.dvare.rule.TextualRule;
 import org.dvare.ruleengine.parser.AnnotatedRuleParser;
@@ -172,7 +173,7 @@ public class RuleEngine {
 
                 //trigger aggregation
                 if (rule.aggregation != null) {
-                    Object aggregationResult = triggerAggregation(rule);
+                    InstancesBinding aggregationResult = triggerAggregation(rule);
                     ruleResult.setAggregationResult(aggregationResult);
 
                 }
@@ -235,14 +236,14 @@ public class RuleEngine {
     }
 
 
-    private Object triggerAggregation(final RuleStructure rule) throws IllegalAccessException, InvocationTargetException {
+    private InstancesBinding triggerAggregation(final RuleStructure rule) throws IllegalAccessException, InvocationTargetException {
         MethodStructure methodStructure = rule.aggregation;
         if (methodStructure != null) {
 
             try {
                 AggregationRuleEngine aggregationRuleEngine = this.aggregationRuleEngine.clone();
                 methodStructure.method.invoke(rule.rule, aggregationRuleEngine);
-                Object aggregate = aggregationRuleEngine.evaluate();
+                InstancesBinding aggregate = aggregationRuleEngine.evaluate();
                 return aggregate;
             } catch (Exception e) {
                 logger.error(e.getMessage(), e);

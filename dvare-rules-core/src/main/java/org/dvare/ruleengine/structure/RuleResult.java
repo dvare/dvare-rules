@@ -24,11 +24,13 @@ THE SOFTWARE.*/
 package org.dvare.ruleengine.structure;
 
 
+import org.dvare.binding.data.InstancesBinding;
+
 public class RuleResult {
     private String ruleId;
     private Object rule;
     private Boolean result;
-    private Object aggregationResult;
+    private InstancesBinding aggregationResult;
 
     public String getRuleId() {
         return ruleId;
@@ -54,11 +56,11 @@ public class RuleResult {
         this.result = result;
     }
 
-    public Object getAggregationResult() {
+    public InstancesBinding getAggregationResult() {
         return aggregationResult;
     }
 
-    public void setAggregationResult(Object aggregationResult) {
+    public void setAggregationResult(InstancesBinding aggregationResult) {
         this.aggregationResult = aggregationResult;
     }
 }

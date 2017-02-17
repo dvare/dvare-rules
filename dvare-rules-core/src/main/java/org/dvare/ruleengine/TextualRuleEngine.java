@@ -25,6 +25,8 @@ package org.dvare.ruleengine;
 
 
 import org.apache.log4j.Logger;
+import org.dvare.binding.data.InstancesBinding;
+import org.dvare.binding.model.ContextsBinding;
 import org.dvare.binding.model.TypeBinding;
 import org.dvare.binding.rule.RuleBinding;
 import org.dvare.config.RuleConfiguration;
@@ -42,8 +44,8 @@ public class TextualRuleEngine implements Cloneable {
 
 
     private RuleBinding ruleBinding;
-    private Object dataBinding;
-    private TypeBinding typeBinding;
+    private InstancesBinding instancesBinding = new InstancesBinding();
+    private ContextsBinding contextsBinding = new ContextsBinding();
 
     public TextualRuleEngine(RuleConfiguration configuration) {
         this.configuration = configuration;
@@ -126,17 +128,23 @@ public class TextualRuleEngine implements Cloneable {
     }
 
 
-    public void register(String rule, Class type, Object object) {
+    public void register(String rule, Class type, Object data) {
+
 
         TypeBinding typeBinding = ExpressionParser.translate(type);
-        register(rule, typeBinding, object);
+        contextsBinding.addContext("self", typeBinding);
+
+        instancesBinding.addInstance("self", data);
+
+
+        register(rule, contextsBinding);
 
     }
 
-    public void register(String rule, TypeBinding typeBinding, Object dataBinding) {
+    private void register(String rule, ContextsBinding typeBinding) {
         try {
-            this.dataBinding = dataBinding;
-            this.typeBinding = typeBinding;
+
+
             Expression expression = configuration.getParser().fromString(rule, typeBinding);
             ruleBinding = new RuleBinding(expression);
             ruleBinding.setRawExpression(rule);
@@ -147,7 +155,7 @@ public class TextualRuleEngine implements Cloneable {
 
 
     public boolean evaluate() throws InterpretException {
-        Object result = configuration.getEvaluator().evaluate(ruleBinding, dataBinding);
+        Object result = configuration.getEvaluator().evaluate(ruleBinding, instancesBinding);
         if (result instanceof Boolean) {
             return (Boolean) result;
         }

@@ -25,7 +25,7 @@ package org.dvare.spring;
 
 import junit.framework.TestCase;
 import org.dvare.api.RuleEngineBuilder;
-import org.dvare.exceptions.rule.IllegalRuleException;
+import org.dvare.exceptions.IllegalRuleException;
 import org.dvare.ruleengine.RuleEngine;
 import org.dvare.spring.test.AggregationRuleTest;
 import org.dvare.spring.test.AnnotatedFileRuleTest;
@@ -87,7 +87,7 @@ public class AnnotatedTest extends TestCase {
 
         RuleEngine ruleEngine = new RuleEngineBuilder().build();
 
-        List<Object> students = new ArrayList<>();
+        List<Student> students = new ArrayList<>();
 
         Student student1 = new Student();
         student1.setName("student1");
@@ -111,7 +111,7 @@ public class AnnotatedTest extends TestCase {
         AggregationRuleTest fileRuleTest = new AggregationRuleTest();
         URL url = this.getClass().getClassLoader().getResource("rules/student_aggregation_rule.dvr");
         fileRuleTest.setAggregationRule(new File(url.getFile()));
-        fileRuleTest.setData(students);
+        fileRuleTest.setStudentList(students);
 
         String ruleId = ruleEngine.registerRule(fileRuleTest);
 

@@ -25,12 +25,12 @@ package org.dvare.ruleengine;
 
 
 import org.apache.log4j.Logger;
-import org.dvare.binding.model.TypeBinding;
+import org.dvare.binding.data.InstancesBinding;
+import org.dvare.binding.model.ContextsBinding;
 import org.dvare.binding.rule.RuleBinding;
 import org.dvare.config.RuleConfiguration;
 import org.dvare.exceptions.interpreter.InterpretException;
 import org.dvare.expression.Expression;
-import org.dvare.parser.ExpressionParser;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -43,9 +43,9 @@ public class AggregationRuleEngine implements Cloneable {
     Logger logger = Logger.getLogger(AggregationRuleEngine.class);
     RuleConfiguration configuration;
 
-    private List<RuleBinding> ruleBindings;
-    private Object object;
-    private List<Object> dataset;
+    private List<RuleBinding> ruleBindings=new ArrayList<>();
+    private ContextsBinding contextsBinding = new ContextsBinding();
+    private InstancesBinding instancesBinding = new InstancesBinding();
 
     public AggregationRuleEngine(RuleConfiguration configuration) {
         this.configuration = configuration;
@@ -56,7 +56,7 @@ public class AggregationRuleEngine implements Cloneable {
         return (AggregationRuleEngine) super.clone();
     }
 
-    public void register(File rulefile, Class atype, Class vtype, Object object, List<Object> dataset) {
+    public void register(File rulefile, ContextsBinding contextsBinding, InstancesBinding instancesBinding) {
 
         try {
             BufferedReader br = new BufferedReader(new FileReader(rulefile));
@@ -75,7 +75,7 @@ public class AggregationRuleEngine implements Cloneable {
             String tokens[] = rule.toString().split(";");
             List<String> rules = Arrays.asList(tokens);
 
-            register(rules, atype, vtype, object, dataset);
+            register(rules, contextsBinding, instancesBinding);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
@@ -83,19 +83,14 @@ public class AggregationRuleEngine implements Cloneable {
     }
 
 
-    public void register(List<String> rules, TypeBinding aTypeBinding, TypeBinding vTypeBinding, Object object, List<Object> dataset) {
+    public void register(List<String> rules, ContextsBinding contextsBinding, InstancesBinding instancesBinding) {
         try {
 
-            this.object = object;
-            this.dataset = dataset;
-            ruleBindings = new ArrayList<>();
-            for (String rule : rules) {
-                Expression expression = configuration.getParser().fromString(rule, vTypeBinding, aTypeBinding);
-                RuleBinding ruleBinding = new RuleBinding(expression);
-                ruleBinding.setRawExpression(rule);
-                ruleBindings.add(ruleBinding);
-            }
+            this.contextsBinding = contextsBinding;
+            this.instancesBinding = instancesBinding;
 
+
+            register(rules, contextsBinding);
 
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -103,15 +98,12 @@ public class AggregationRuleEngine implements Cloneable {
 
     }
 
-    public void register(List<String> rules, Class atype, Class vtype, Object object, List<Object> dataset) {
+    private void register(List<String> rules, ContextsBinding contextsBinding) {
         try {
-            this.object = object;
-            this.dataset = dataset;
+
             ruleBindings = new ArrayList<>();
             for (String rule : rules) {
-                TypeBinding vTypeBinding = ExpressionParser.translate(vtype);
-                TypeBinding aTypeBinding = ExpressionParser.translate(atype);
-                Expression expression = configuration.getParser().fromString(rule, aTypeBinding, vTypeBinding);
+                Expression expression = configuration.getParser().fromString(rule, contextsBinding);
                 RuleBinding ruleBinding = new RuleBinding(expression);
                 ruleBinding.setRawExpression(rule);
                 ruleBindings.add(ruleBinding);
@@ -124,8 +116,8 @@ public class AggregationRuleEngine implements Cloneable {
     }
 
 
-    public Object evaluate() throws InterpretException {
-        Object result = configuration.getEvaluator().evaluate(ruleBindings, object, dataset);
+    public InstancesBinding evaluate() throws InterpretException {
+        InstancesBinding result = configuration.getEvaluator().aggregate(ruleBindings, instancesBinding);
         return result;
     }
 

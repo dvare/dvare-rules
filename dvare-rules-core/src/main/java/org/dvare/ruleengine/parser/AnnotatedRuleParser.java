@@ -24,8 +24,8 @@ THE SOFTWARE.*/
 package org.dvare.ruleengine.parser;
 
 import org.dvare.annotations.*;
-import org.dvare.exceptions.rule.ConditionNotFoundException;
-import org.dvare.exceptions.rule.ConditionParamNotFoundException;
+import org.dvare.exceptions.ConditionNotFoundException;
+import org.dvare.exceptions.ConditionParamNotFoundException;
 import org.dvare.ruleengine.TextualRuleEngine;
 import org.dvare.ruleengine.structure.ConditionStructure;
 import org.dvare.ruleengine.structure.MethodStructure;

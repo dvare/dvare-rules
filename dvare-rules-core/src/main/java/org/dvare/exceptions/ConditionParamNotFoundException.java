@@ -21,7 +21,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 
-package org.dvare.exceptions.rule;
+package org.dvare.exceptions;
 
 
 public class ConditionParamNotFoundException extends IllegalRuleException {

@@ -25,7 +25,7 @@ package org.dvare.spring;
 
 import junit.framework.TestCase;
 import org.dvare.api.RuleEngineBuilder;
-import org.dvare.exceptions.rule.IllegalRuleException;
+import org.dvare.exceptions.IllegalRuleException;
 import org.dvare.ruleengine.RuleEngine;
 import org.dvare.spring.test.BasicRuleTest;
 import org.dvare.spring.test.TextualRuleTest;

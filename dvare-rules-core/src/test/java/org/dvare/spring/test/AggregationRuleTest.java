@@ -25,6 +25,9 @@ package org.dvare.spring.test;
 
 import org.apache.log4j.Logger;
 import org.dvare.annotations.*;
+import org.dvare.binding.data.InstancesBinding;
+import org.dvare.binding.model.ContextsBinding;
+import org.dvare.parser.ExpressionParser;
 import org.dvare.ruleengine.AggregationRuleEngine;
 import org.dvare.spring.test.model.Student;
 import org.dvare.spring.test.model.StudentAggregation;
@@ -36,8 +39,8 @@ import java.util.List;
 public class AggregationRuleTest {
     Logger logger = Logger.getLogger(AggregationRuleTest.class);
     private File aggregationRule;
-    private List<Object> data;
-    private StudentAggregation result = new StudentAggregation();
+    private List<Student> studentList;
+    private StudentAggregation studentAggregation = new StudentAggregation();
 
 
  /*   @Condition(type = ConditionType.TEXT)
@@ -47,7 +50,18 @@ public class AggregationRuleTest {
 
     @Aggregation
     public void aggregation(AggregationRuleEngine aggregationRuleEngine) {
-        aggregationRuleEngine.register(aggregationRule, StudentAggregation.class, Student.class, result, data);
+
+
+        ContextsBinding contextsBinding = new ContextsBinding();
+        contextsBinding.addContext("result", ExpressionParser.translate(StudentAggregation.class));
+        contextsBinding.addContext("student", ExpressionParser.translate(Student.class));
+
+
+        InstancesBinding instancesBinding = new InstancesBinding();
+        instancesBinding.addInstance("result", studentAggregation);
+        instancesBinding.addInstance("student", studentList);
+
+        aggregationRuleEngine.register(aggregationRule, contextsBinding, instancesBinding);
     }
 
 
@@ -79,19 +93,19 @@ public class AggregationRuleTest {
         this.aggregationRule = aggregationRule;
     }
 
-    public List<Object> getData() {
-        return data;
+    public List<Student> getStudentList() {
+        return studentList;
     }
 
-    public void setData(List<Object> data) {
-        this.data = data;
+    public void setStudentList(List<Student> studentList) {
+        this.studentList = studentList;
     }
 
-    public StudentAggregation getResult() {
-        return result;
+    public StudentAggregation getStudentAggregation() {
+        return studentAggregation;
     }
 
-    public void setResult(StudentAggregation result) {
-        this.result = result;
+    public void setStudentAggregation(StudentAggregation studentAggregation) {
+        this.studentAggregation = studentAggregation;
     }
 }

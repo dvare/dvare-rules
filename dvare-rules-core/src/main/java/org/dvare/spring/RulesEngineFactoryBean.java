@@ -21,13 +21,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 
-package org.dvare.spring.config;
+package org.dvare.spring;
 
 
 
 import org.apache.log4j.Logger;
 import org.dvare.api.RuleEngineBuilder;
-import org.dvare.exceptions.rule.IllegalRuleException;
+import org.dvare.exceptions.IllegalRuleException;
 import org.dvare.ruleengine.RuleEngine;
 import org.springframework.beans.factory.FactoryBean;
 
