@@ -24,22 +24,19 @@ THE SOFTWARE.*/
 package org.dvare.spring;
 
 import junit.framework.TestCase;
-import org.dvare.config.RuleConfiguration;
+import org.dvare.api.RuleEngineBuilder;
 import org.dvare.exceptions.rule.IllegalRuleException;
 import org.dvare.ruleengine.RuleEngine;
-import org.dvare.ruleengine.TextualRuleEngine;
 import org.dvare.spring.test.BasicRuleTest;
-import org.dvare.spring.test.Person;
 import org.dvare.spring.test.TextualRuleTest;
+import org.dvare.spring.test.model.Person;
 import org.junit.Test;
 
 public class RuleTest extends TestCase {
     @Test
     public void testApp() throws IllegalRuleException {
 
-        RuleConfiguration configuration = new RuleConfiguration();
-        TextualRuleEngine textualRuleEngine = new TextualRuleEngine(configuration);
-        RuleEngine ruleEngine = new RuleEngine(textualRuleEngine);
+        RuleEngine ruleEngine = new RuleEngineBuilder().build();
 
         BasicRuleTest basicRule = new BasicRuleTest();
         ruleEngine.registerRule(basicRule);
@@ -47,6 +44,7 @@ public class RuleTest extends TestCase {
 
         Person person = new Person();
         person.setAge(25);
+
 
         TextualRuleTest textualRule = new TextualRuleTest();
         textualRule.setRule("age between [ 20 , 30 ]");

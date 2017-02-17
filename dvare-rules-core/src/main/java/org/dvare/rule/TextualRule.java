@@ -37,7 +37,7 @@ public interface TextualRule {
     public default void before() {
     }
 
-    public boolean condition(TextualRuleEngine textualRuleEngine);
+    public void condition(TextualRuleEngine textualRuleEngine);
 
     public default void after() {
     }

@@ -3,7 +3,7 @@
     <parent>
         <artifactId>dvare-rules</artifactId>
         <groupId>org.dvare</groupId>
-        <version>1.0</version>
+        <version>1.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -43,7 +43,6 @@
         <dependency>
             <groupId>org.dvare</groupId>
             <artifactId>dvare-rules-core</artifactId>
-            <version>1.0</version>
         </dependency>
 
         <dependency>

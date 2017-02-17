@@ -29,6 +29,12 @@ import org.dvare.annotations.Rule;
 import org.dvare.exceptions.rule.IllegalRuleException;
 import org.dvare.rule.BasicRule;
 import org.dvare.rule.TextualRule;
+import org.dvare.ruleengine.parser.AnnotatedRuleParser;
+import org.dvare.ruleengine.parser.RuleParser;
+import org.dvare.ruleengine.structure.ConditionStructure;
+import org.dvare.ruleengine.structure.MethodStructure;
+import org.dvare.ruleengine.structure.RuleResult;
+import org.dvare.ruleengine.structure.RuleStructure;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
@@ -46,14 +52,14 @@ public class RuleEngine {
     private Integer satisfyCondition = 0;
     private Boolean stopOnFail = false;
     private TextualRuleEngine textualRuleEngine;
+    private AggregationRuleEngine aggregationRuleEngine;
     private List<RuleResult> ruleResults;
     private Map<String, RuleStructure> rules = new HashMap<>();
 
-
-    public RuleEngine(TextualRuleEngine textualRuleEngine) {
+    public RuleEngine(TextualRuleEngine textualRuleEngine, AggregationRuleEngine aggregationRuleEngine) {
         this.textualRuleEngine = textualRuleEngine;
+        this.aggregationRuleEngine = aggregationRuleEngine;
     }
-
 
     /**
      * The registerRule method is used to register rules in a RuleBinding Engine.
@@ -155,12 +161,22 @@ public class RuleEngine {
             try {
                 //trigger Condition
                 Boolean result = triggerConditions(rule);
-                //trigger Listener
-                triggerListener(rule, result);
+
                 RuleResult ruleResult = new RuleResult();
                 ruleResult.setRuleId(rule.ruleId);
                 ruleResult.setRule(rule.rule);
                 ruleResult.setResult(result);
+
+                //trigger success and fail Listener
+                triggerListener(rule, result);
+
+                //trigger aggregation
+                if (rule.aggregation != null) {
+                    Object aggregationResult = triggerAggregation(rule);
+                    ruleResult.setAggregationResult(aggregationResult);
+
+                }
+
 
                 ruleResults.add(ruleResult);
 
@@ -193,6 +209,15 @@ public class RuleEngine {
         return ruleResults;
     }
 
+    public RuleResult getResult(String ruleId) {
+        for (RuleResult result : ruleResults) {
+            if (result.getRuleId().equals(ruleId)) {
+                return result;
+            }
+        }
+        return null;
+    }
+
     private void triggerBefore(final RuleStructure rule) throws IllegalAccessException, InvocationTargetException {
         List<MethodStructure> beforeMethods = rule.beforeMethods;
         Collections.sort(beforeMethods);
@@ -208,6 +233,25 @@ public class RuleEngine {
             methodStructure.method.invoke(rule.rule);
         }
     }
+
+
+    private Object triggerAggregation(final RuleStructure rule) throws IllegalAccessException, InvocationTargetException {
+        MethodStructure methodStructure = rule.aggregation;
+        if (methodStructure != null) {
+
+            try {
+                AggregationRuleEngine aggregationRuleEngine = this.aggregationRuleEngine.clone();
+                methodStructure.method.invoke(rule.rule, aggregationRuleEngine);
+                Object aggregate = aggregationRuleEngine.evaluate();
+                return aggregate;
+            } catch (Exception e) {
+                logger.error(e.getMessage(), e);
+            }
+
+        }
+        return null;
+    }
+
 
     private Boolean triggerConditions(RuleStructure rule) throws IllegalAccessException, InvocationTargetException {
 
@@ -225,7 +269,17 @@ public class RuleEngine {
             if (conditionStructure.conditionType.equals(ConditionType.CODE)) {
                 conditionResult = conditionStructure.condition.invoke(rule.rule);
             } else if (conditionStructure.conditionType.equals(ConditionType.TEXT)) {
-                conditionResult = conditionStructure.condition.invoke(rule.rule, textualRuleEngine);
+
+                try {
+                    TextualRuleEngine textualRuleEngine = this.textualRuleEngine.clone();
+                    conditionStructure.condition.invoke(rule.rule, textualRuleEngine);
+                    conditionResult = textualRuleEngine.evaluate();
+
+                } catch (Exception e) {
+                    logger.error(e.getMessage(), e);
+                }
+
+
             }
             // after condition
             triggerAfter(rule);
