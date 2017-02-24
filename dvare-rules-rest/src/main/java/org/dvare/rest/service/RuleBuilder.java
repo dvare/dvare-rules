@@ -29,7 +29,6 @@ import org.dvare.binding.data.DataRow;
 import org.dvare.binding.model.TypeBinding;
 import org.dvare.exceptions.parser.IllegalValueException;
 import org.dvare.expression.datatype.DataType;
-import org.dvare.expression.literal.LiteralDataType;
 import org.dvare.expression.literal.LiteralExpression;
 import org.dvare.expression.literal.LiteralType;
 import org.dvare.rest.registry.RuleEngineRegistry;
@@ -98,7 +97,7 @@ public class RuleBuilder {
             String key = (String) keys.next();
             Object data = modelTypes.get(key);
             if (data instanceof String) {
-                DataType dataType = LiteralDataType.computeDataType(data.toString());
+                DataType dataType = LiteralType.computeDataType(data.toString());
                 if (dataType == null) {
                     dataType = DataType.StringType;
                 }

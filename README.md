@@ -1,30 +1,30 @@
-## What is DVARE RULES [![Build Status](https://travis-ci.org/dvare/rules.svg?branch=master)](https://travis-ci.org/dvare/rules)
-DVARE RULES is business rule engine built DVARE Framework on which provides an interface for embedding
-        POJO rules in your application. You can turn your POJOs into business rules with a couple of intuitive
-        annotations and you can evaluate both text and java based rules.[https://dvare.org/](https://dvare.org/)
+##Dvare Rules 
+A Lightweight Java business rule engine..[https://dvare.org/](https://dvare.org/)
+
 
 ## Current version
 
-* The current  version is `1.0` 
-
- you need to add the following maven repository in your `pom.xml`:
+* The current stable version is `1.0` : [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.dvare/ddvare-rules/badge.svg?style=flat)](http://search.maven.org/#artifactdetails|org.dvare|dvare-rules|1.0|)
+* The current snapshot version is `1.0-SNAPSHOT` : [![Build Status](https://travis-ci.org/dvare/dvare-rules.svg?branch=master)](https://travis-ci.org/dvare/dvare-rules) 
+In order to use snapshot versions, you need to add the following maven repository in your `pom.xml`:
 
 ```xml
 <repository>
-    <id>davre</id>
-    <url>https://oss.sonatype.org/content/groups/staging/</url>
+    <id>ossrh</id>
+    <url>https://oss.sonatype.org/content/repositories/snapshots</url>
 </repository>
+```
+
+
+ Maven dependency:
+```xml
 <dependencies>
         <dependency>
             <groupId>org.dvare</groupId>
-            <artifactId>dvare-rules-core</artifactId>
+            <artifactId>dvare-rules</artifactId>
             <version>1.0</version>
         </dependency>
-        <dependency>
-            <groupId>org.dvare</groupId>
-            <artifactId>dvare-rules-spring</artifactId>
-            <version>1.0</version>
-        </dependency>    
+        
         <dependency>
             <groupId>org.dvare</groupId>
             <artifactId>dvare-rules-rest</artifactId>
@@ -34,12 +34,12 @@ DVARE RULES is business rule engine built DVARE Framework on which provides an i
 ```
 
 ## License
-DVARE RULES is released under the [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](http://opensource.org/licenses/MIT).
+Dvare rules  is released under the [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](http://opensource.org/licenses/MIT).
 
 ```
 The MIT License (MIT)
 
-Copyright (c) 2016 Muhammad Hammad
+Copyright (c) 2016-2017 DVARE (Data Validation and Aggregation Rule Engine)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -59,5 +59,3 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ```
-
-

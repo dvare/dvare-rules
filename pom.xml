@@ -3,18 +3,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.dvare</groupId>
-    <artifactId>dvare-rules</artifactId>
+    <artifactId>dvare-rules-parent</artifactId>
     <version>1.1-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
     <name>DVARE RULES</name>
     <url>http://dvare.org</url>
-
-    <description>DVARE RULES is business rule engine built DVARE Framework on which provides an interface for embedding
-        POJO rules in your application. You can turn your POJOs into business rules with a couple of intuitive
-        annotations and you can evaluate both text and java based rules.
-    </description>
 
     <developers>
         <developer>
@@ -30,9 +25,8 @@
 
 
     <modules>
-        <module>dvare-rules-core</module>
+        <module>dvare-rules</module>
         <module>dvare-rules-rest</module>
-        <module>dvare-rules-rest-war</module>
     </modules>
 
     <properties>
@@ -109,9 +103,10 @@
 
             <dependency>
                 <groupId>org.dvare</groupId>
-                <artifactId>dvare-rules-core</artifactId>
+                <artifactId>dvare-rules</artifactId>
                 <version>${project.version}</version>
             </dependency>
+
 
             <dependency>
                 <groupId>org.dvare</groupId>
