@@ -21,8 +21,28 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 
-package org.dvare.annotations;
+package org.dvare.rule;
 
-public enum ConditionType {
-    CODE, DVARE;
+
+import org.dvare.ruleengine.DvareRuleEngine;
+
+public interface DvareRule {
+
+    public String getName();
+
+    public default int priority() {
+        return 0;
+    }
+
+    public default void before() {
+    }
+
+    public void condition(DvareRuleEngine textualRuleEngine);
+
+    public default void after() {
+    }
+
+    public void success();
+
+    public void fail();
 }

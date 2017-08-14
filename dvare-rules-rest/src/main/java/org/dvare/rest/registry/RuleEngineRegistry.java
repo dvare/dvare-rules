@@ -26,7 +26,7 @@ package org.dvare.rest.registry;
 
 import org.dvare.config.RuleConfiguration;
 import org.dvare.rest.ruleengine.RestRuleEngine;
-import org.dvare.ruleengine.TextualRuleEngine;
+import org.dvare.ruleengine.DvareRuleEngine;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,7 +43,7 @@ public class RuleEngineRegistry {
 
     public String createNewEngine(String sessionId) {
         RuleConfiguration ruleConfiguration = new RuleConfiguration();
-        TextualRuleEngine textualRuleEngine = new TextualRuleEngine(ruleConfiguration);
+        DvareRuleEngine textualRuleEngine = new DvareRuleEngine(ruleConfiguration);
         RestRuleEngine restRuleEngine = new RestRuleEngine(sessionId, textualRuleEngine);
         registry.put(sessionId, restRuleEngine);
         return sessionId;

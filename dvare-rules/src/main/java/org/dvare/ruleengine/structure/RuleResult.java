@@ -32,6 +32,13 @@ public class RuleResult {
     private Boolean result;
     private InstancesBinding aggregationResult;
 
+    public Object getObject(String name) {
+        return aggregationResult.getInstance(name);
+    }
+
+
+    /*getter and setters*/
+
     public String getRuleId() {
         return ruleId;
     }

@@ -28,8 +28,9 @@ import org.dvare.annotations.ConditionType;
 import org.dvare.annotations.Rule;
 import org.dvare.binding.data.InstancesBinding;
 import org.dvare.exceptions.IllegalRuleException;
+import org.dvare.exceptions.interpreter.InterpretException;
 import org.dvare.rule.BasicRule;
-import org.dvare.rule.TextualRule;
+import org.dvare.rule.DvareRule;
 import org.dvare.ruleengine.parser.AnnotatedRuleParser;
 import org.dvare.ruleengine.parser.RuleParser;
 import org.dvare.ruleengine.structure.ConditionStructure;
@@ -48,16 +49,16 @@ import java.util.*;
  * @since 2016-08-20
  */
 public class RuleEngine {
-    Logger logger = Logger.getLogger(RuleEngine.class);
+    private static Logger logger = Logger.getLogger(RuleEngine.class);
 
     private Integer satisfyCondition = 0;
     private Boolean stopOnFail = false;
-    private TextualRuleEngine textualRuleEngine;
+    private DvareRuleEngine textualRuleEngine;
     private AggregationRuleEngine aggregationRuleEngine;
     private List<RuleResult> ruleResults;
     private Map<String, RuleStructure> rules = new HashMap<>();
 
-    public RuleEngine(TextualRuleEngine textualRuleEngine, AggregationRuleEngine aggregationRuleEngine) {
+    public RuleEngine(DvareRuleEngine textualRuleEngine, AggregationRuleEngine aggregationRuleEngine) {
         this.textualRuleEngine = textualRuleEngine;
         this.aggregationRuleEngine = aggregationRuleEngine;
     }
@@ -82,14 +83,14 @@ public class RuleEngine {
         }
 
 
-        RuleStructure ruleStructure = null;
+        RuleStructure ruleStructure;
 
         if (rule.getClass().isAnnotationPresent(Rule.class)) {
             AnnotatedRuleParser annotatedRuleParser = new AnnotatedRuleParser();
             annotatedRuleParser.validateRule(rule);
             ruleStructure = annotatedRuleParser.parseRule(rule, rules.values().size());
 
-        } else if (rule instanceof BasicRule || rule instanceof TextualRule) {
+        } else if (rule instanceof BasicRule || rule instanceof DvareRule) {
 
             RuleParser ruleParser = new RuleParser();
             ruleStructure = ruleParser.parseRule(rule, rules.values().size());
@@ -159,13 +160,15 @@ public class RuleEngine {
 
         for (RuleStructure rule : ruleSet) {
 
+            RuleResult ruleResult = new RuleResult();
+            ruleResult.setRuleId(rule.ruleId);
+            ruleResult.setRule(rule.rule);
+
             try {
                 //trigger Condition
                 Boolean result = triggerConditions(rule);
 
-                RuleResult ruleResult = new RuleResult();
-                ruleResult.setRuleId(rule.ruleId);
-                ruleResult.setRule(rule.rule);
+
                 ruleResult.setResult(result);
 
                 //trigger success and fail Listener
@@ -179,15 +182,24 @@ public class RuleEngine {
                 }
 
 
-                ruleResults.add(ruleResult);
-
                 if (stopOnFail && !result) {
                     break;
                 }
-
+            } catch (InvocationTargetException e) {
+                if (e.getCause() != null) {
+                    logger.error(e.getCause().getMessage(), e.getCause());
+                } else {
+                    logger.error(e.getMessage(), e);
+                }
+                ruleResult.setResult(false);
             } catch (Exception e) {
                 logger.error(e.getMessage(), e);
+                ruleResult.setResult(false);
+            } finally {
+
+                ruleResults.add(ruleResult);
             }
+
 
         }
 
@@ -219,6 +231,15 @@ public class RuleEngine {
         return null;
     }
 
+    public RuleResult getResult(Object rule) {
+        for (RuleResult result : ruleResults) {
+            if (result.getRule().equals(rule)) {
+                return result;
+            }
+        }
+        return null;
+    }
+
     private void triggerBefore(final RuleStructure rule) throws IllegalAccessException, InvocationTargetException {
         List<MethodStructure> beforeMethods = rule.beforeMethods;
         Collections.sort(beforeMethods);
@@ -236,19 +257,13 @@ public class RuleEngine {
     }
 
 
-    private InstancesBinding triggerAggregation(final RuleStructure rule) throws IllegalAccessException, InvocationTargetException {
+    private InstancesBinding triggerAggregation(final RuleStructure rule) throws IllegalAccessException, InvocationTargetException, CloneNotSupportedException, InterpretException {
         MethodStructure methodStructure = rule.aggregation;
         if (methodStructure != null) {
 
-            try {
-                AggregationRuleEngine aggregationRuleEngine = this.aggregationRuleEngine.clone();
-                methodStructure.method.invoke(rule.rule, aggregationRuleEngine);
-                InstancesBinding aggregate = aggregationRuleEngine.evaluate();
-                return aggregate;
-            } catch (Exception e) {
-                logger.error(e.getMessage(), e);
-            }
-
+            AggregationRuleEngine aggregationRuleEngine = this.aggregationRuleEngine.clone();
+            methodStructure.method.invoke(rule.rule, aggregationRuleEngine);
+            return aggregationRuleEngine.evaluate();
         }
         return null;
     }
@@ -269,12 +284,19 @@ public class RuleEngine {
             Object conditionResult = null;
             if (conditionStructure.conditionType.equals(ConditionType.CODE)) {
                 conditionResult = conditionStructure.condition.invoke(rule.rule);
-            } else if (conditionStructure.conditionType.equals(ConditionType.TEXT)) {
+            } else if (conditionStructure.conditionType.equals(ConditionType.DVARE)) {
 
                 try {
-                    TextualRuleEngine textualRuleEngine = this.textualRuleEngine.clone();
+                    DvareRuleEngine textualRuleEngine = this.textualRuleEngine.clone();
                     conditionStructure.condition.invoke(rule.rule, textualRuleEngine);
                     conditionResult = textualRuleEngine.evaluate();
+
+                } catch (InvocationTargetException e) {
+                    if (e.getCause() != null) {
+                        logger.error(e.getCause().getMessage(), e.getCause());
+                    } else {
+                        logger.error(e.getMessage(), e);
+                    }
 
                 } catch (Exception e) {
                     logger.error(e.getMessage(), e);
@@ -292,16 +314,18 @@ public class RuleEngine {
         }
 
 
-        if (satisfyCondition.equals(0)) {
+        if (satisfyCondition.equals(0)) { //any match
 
             for (Boolean result : results) {
                 if (result) return true;
             }
 
+            return false;
         } else if (satisfyCondition.equals(1)) {
             for (Boolean result : results) {
                 if (!result) return false;
             }
+            return true;
         }
 
 

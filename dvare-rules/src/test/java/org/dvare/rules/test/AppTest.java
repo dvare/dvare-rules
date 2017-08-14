@@ -21,8 +21,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 
-package org.dvare.annotations;
+package org.dvare.rules.test;
 
-public enum ConditionType {
-    CODE, DVARE;
+
+import org.dvare.rules.test.model.RuleTest;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+
+
+@RunWith(Suite.class)
+@Suite.SuiteClasses({RuleTest.class, AnnotatedTest.class})
+public class AppTest {
+
+
 }

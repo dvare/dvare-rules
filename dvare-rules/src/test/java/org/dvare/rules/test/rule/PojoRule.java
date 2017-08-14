@@ -21,8 +21,49 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 
-package org.dvare.annotations;
+package org.dvare.rules.test.rule;
 
-public enum ConditionType {
-    CODE, DVARE;
+import org.apache.log4j.Logger;
+import org.dvare.annotations.*;
+
+@Rule(name = "pojoRule", priority = 0)
+public class PojoRule {
+    private static Logger logger = Logger.getLogger(PojoRule.class);
+    private Integer age;
+
+    @Condition(type = ConditionType.CODE)
+    public Boolean condition() {
+
+        return age > 20 && age < 30;
+    }
+
+    @Before
+    public void beforeAction() {
+        logger.info("Before RuleBinding Running");
+    }
+
+    @Success
+    public void success() {
+        logger.info("RuleBinding Successfully Run");
+    }
+
+    @Fail
+    public void fail() {
+        logger.error("RuleBinding Failed");
+    }
+
+    @After
+    public void afterAction() {
+        logger.info("After RuleBinding Running");
+
+    }
+
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
 }

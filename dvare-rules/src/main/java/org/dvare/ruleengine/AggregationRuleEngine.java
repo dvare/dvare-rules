@@ -29,23 +29,20 @@ import org.dvare.binding.data.InstancesBinding;
 import org.dvare.binding.model.ContextsBinding;
 import org.dvare.binding.rule.RuleBinding;
 import org.dvare.config.RuleConfiguration;
+import org.dvare.exceptions.IllegalRuleException;
 import org.dvare.exceptions.interpreter.InterpretException;
 import org.dvare.expression.Expression;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class AggregationRuleEngine implements Cloneable {
-    Logger logger = Logger.getLogger(AggregationRuleEngine.class);
+    private Logger logger = Logger.getLogger(AggregationRuleEngine.class);
     RuleConfiguration configuration;
 
-    private List<RuleBinding> ruleBindings = new ArrayList<>();
-    private ContextsBinding contextsBinding = new ContextsBinding();
-    private InstancesBinding instancesBinding = new InstancesBinding();
+    private RuleBinding ruleBinding;
+    private ContextsBinding contextsBinding;
+    private InstancesBinding instancesBinding;
 
     public AggregationRuleEngine(RuleConfiguration configuration) {
         this.configuration = configuration;
@@ -56,26 +53,23 @@ public class AggregationRuleEngine implements Cloneable {
         return (AggregationRuleEngine) super.clone();
     }
 
-    public void register(File rulefile, ContextsBinding contextsBinding, InstancesBinding instancesBinding) {
+    public void register(File rule, ContextsBinding contextsBinding, InstancesBinding instancesBinding) throws IllegalRuleException {
+
+
+        if (!rule.exists()) {
+            throw new IllegalRuleException("Rule File " + rule.getName() + " not exists.");
+        }
 
         try {
-            BufferedReader br = new BufferedReader(new FileReader(rulefile));
 
-
-            StringBuilder rule = new StringBuilder();
-            String row;
-            while ((row = br.readLine()) != null) {
-                rule.append(row.trim());
-                if (!row.trim().contains(";")) {
-                    rule.append(" ");
-                }
+            FileReader fileReader = new FileReader(rule);
+            StringBuilder ruleBuilder = new StringBuilder();
+            int c;
+            while ((c = fileReader.read()) != -1) {
+                ruleBuilder.append((char) c);
             }
 
-
-            String tokens[] = rule.toString().split(";");
-            List<String> rules = Arrays.asList(tokens);
-
-            register(rules, contextsBinding, instancesBinding);
+            register(ruleBuilder.toString(), contextsBinding, instancesBinding);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
@@ -83,14 +77,14 @@ public class AggregationRuleEngine implements Cloneable {
     }
 
 
-    public void register(List<String> rules, ContextsBinding contextsBinding, InstancesBinding instancesBinding) {
+    public void register(String rule, ContextsBinding contextsBinding, InstancesBinding instancesBinding) {
         try {
 
             this.contextsBinding = contextsBinding;
             this.instancesBinding = instancesBinding;
 
 
-            register(rules, contextsBinding);
+            register(rule, contextsBinding);
 
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -98,17 +92,10 @@ public class AggregationRuleEngine implements Cloneable {
 
     }
 
-    private void register(List<String> rules, ContextsBinding contextsBinding) {
+    private void register(String rule, ContextsBinding contextsBinding) {
         try {
-
-            ruleBindings = new ArrayList<>();
-            for (String rule : rules) {
-                Expression expression = configuration.getParser().fromString(rule, contextsBinding);
-                RuleBinding ruleBinding = new RuleBinding(expression);
-                ruleBinding.setRawExpression(rule);
-                ruleBindings.add(ruleBinding);
-            }
-
+            Expression expression = configuration.getParser().fromString(rule, contextsBinding);
+            ruleBinding = new RuleBinding(expression);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
@@ -117,8 +104,8 @@ public class AggregationRuleEngine implements Cloneable {
 
 
     public InstancesBinding evaluate() throws InterpretException {
-        InstancesBinding result = configuration.getEvaluator().aggregate(ruleBindings, instancesBinding);
-        return result;
+        configuration.getEvaluator().aggregate(ruleBinding, instancesBinding);
+        return instancesBinding;
     }
 
 

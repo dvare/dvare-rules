@@ -21,16 +21,55 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 
-package org.dvare.rules;
+package org.dvare.rules.test.rule;
 
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
+import org.apache.log4j.Logger;
+import org.dvare.annotations.*;
+import org.dvare.ruleengine.DvareRuleEngine;
+import org.dvare.rules.test.model.Person;
+
+@Rule(name = "Annotated Dvare Rule")
+public class AnnotatedDvareRule {
+    private static Logger logger = Logger.getLogger(AnnotatedDvareRule.class);
+
+    private String rule;
+    private Person person;
+
+    @Condition(type = ConditionType.DVARE)
+    public void condition(DvareRuleEngine textualRuleEngine) {
+        textualRuleEngine.register(rule, Person.class, person);
+    }
 
 
-@RunWith(Suite.class)
-@Suite.SuiteClasses({RuleTest.class, AnnotatedTest.class})
-public class AppTest {
+    @Before
+    public void beforeCondition() {
+        logger.info("Before Condition ");
+    }
+
+    @After
+    public void afterCondition() {
+        logger.info("After Condition ");
+
+    }
 
 
+    @Success
+    public void success() {
+        logger.info("Rule Successfully Run");
+    }
+
+    @Fail
+    public void fail() {
+        logger.error("Rule Failed");
+    }
+
+
+    public void setRule(String rule) {
+        this.rule = rule;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
+    }
 }

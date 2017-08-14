@@ -21,38 +21,48 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 
-package org.dvare.rules;
+package org.dvare.rules.test.rule;
 
-import junit.framework.TestCase;
-import org.dvare.api.RuleEngineBuilder;
-import org.dvare.exceptions.IllegalRuleException;
-import org.dvare.ruleengine.RuleEngine;
-import org.dvare.rules.test.BasicRuleTest;
-import org.dvare.rules.test.TextualRuleTest;
+
+import org.apache.log4j.Logger;
+import org.dvare.ruleengine.DvareRuleEngine;
 import org.dvare.rules.test.model.Person;
-import org.junit.Test;
-
-public class RuleTest extends TestCase {
-    @Test
-    public void testApp() throws IllegalRuleException {
-
-        RuleEngine ruleEngine = new RuleEngineBuilder().build();
-
-        BasicRuleTest basicRule = new BasicRuleTest();
-        ruleEngine.registerRule(basicRule);
 
 
-        Person person = new Person();
-        person.setAge(25);
+public class DvareRule implements org.dvare.rule.DvareRule {
+    private static Logger logger = Logger.getLogger(DvareRule.class);
+
+    private String rule;
+    private Person person;
+
+    @Override
+    public String getName() {
+        return "Dvare Rule";
+    }
 
 
-        TextualRuleTest textualRule = new TextualRuleTest();
-        textualRule.setRule("age between [ 20 , 30 ]");
-        textualRule.setPerson(person);
-        ruleEngine.registerRule(textualRule);
+    @Override
+    public void condition(DvareRuleEngine dvareRuleEngine) {
+        dvareRuleEngine.register(rule, Person.class, person);
 
-        ruleEngine.fireRules();
+    }
+
+    @Override
+    public void success() {
+        logger.info("Rule Successfully Run");
+    }
+
+    @Override
+    public void fail() {
+        logger.error("Rule Failed");
+    }
 
 
+    public void setRule(String rule) {
+        this.rule = rule;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
     }
 }

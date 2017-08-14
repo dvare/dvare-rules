@@ -24,14 +24,14 @@ THE SOFTWARE.*/
 package org.dvare.rules.test;
 
 
-import junit.framework.TestCase;
 import org.dvare.exceptions.IllegalRuleException;
 import org.dvare.ruleengine.RuleEngine;
+import org.dvare.rules.test.rule.PojoRule;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class SpringXML extends TestCase {
+public class SpringXML {
 
     @Test
     public void testApp() throws IllegalRuleException {
@@ -39,7 +39,7 @@ public class SpringXML extends TestCase {
                 new ClassPathXmlApplicationContext("application-context.xml");
         RuleEngine ruleEngine = context.getBean(RuleEngine.class);
 
-        FirstRule ruleTest = new FirstRule();
+        PojoRule ruleTest = new PojoRule();
         ruleTest.setAge(25);
         ruleEngine.registerRule(ruleTest);
 

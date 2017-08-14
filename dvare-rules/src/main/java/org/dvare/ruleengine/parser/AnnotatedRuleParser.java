@@ -26,7 +26,7 @@ package org.dvare.ruleengine.parser;
 import org.dvare.annotations.*;
 import org.dvare.exceptions.ConditionNotFoundException;
 import org.dvare.exceptions.ConditionParamNotFoundException;
-import org.dvare.ruleengine.TextualRuleEngine;
+import org.dvare.ruleengine.DvareRuleEngine;
 import org.dvare.ruleengine.structure.ConditionStructure;
 import org.dvare.ruleengine.structure.MethodStructure;
 import org.dvare.ruleengine.structure.RuleStructure;
@@ -106,11 +106,11 @@ public class AnnotatedRuleParser {
                 ConditionType conditionType = condition.type();
 
 
-                if (conditionType.equals(ConditionType.TEXT)) {
+                if (conditionType.equals(ConditionType.DVARE)) {
                     if (method.getParameters() != null && method.getParameters().length > 0) {
 
                         Parameter parameter = method.getParameters()[0];
-                        if (!parameter.getType().equals(TextualRuleEngine.class)) {
+                        if (!parameter.getType().equals(DvareRuleEngine.class)) {
                             throw new ConditionParamNotFoundException(" Condition Type TEXT not contain TextualRuleEngine param");
                         }
                     } else {

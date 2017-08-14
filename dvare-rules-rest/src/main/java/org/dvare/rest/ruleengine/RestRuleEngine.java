@@ -26,22 +26,23 @@ package org.dvare.rest.ruleengine;
 
 import org.dvare.binding.data.DataRow;
 import org.dvare.binding.model.TypeBinding;
+import org.dvare.exceptions.interpreter.InterpretException;
 import org.dvare.rest.resource.RuleResult;
-import org.dvare.ruleengine.TextualRuleEngine;
+import org.dvare.ruleengine.DvareRuleEngine;
 
 import java.util.*;
 
 public class RestRuleEngine {
 
-    String name;
-    TextualRuleEngine textualRuleEngine;
+    private String name;
+    private DvareRuleEngine dvareRuleEngine;
 
 
     private Map<String, RuleStructure> rules = new HashMap<>();
 
-    public RestRuleEngine(String name, TextualRuleEngine textualRuleEngine) {
+    public RestRuleEngine(String name, DvareRuleEngine dvareRuleEngine) {
         this.name = name;
-        this.textualRuleEngine = textualRuleEngine;
+        this.dvareRuleEngine = dvareRuleEngine;
     }
 
     public String registerRule(String ruleName, Integer rulePriority, String rule, TypeBinding typeBinding, DataRow dataRow) {
@@ -78,7 +79,7 @@ public class RestRuleEngine {
         rules.clear();
     }
 
-    public List<RuleResult> fireRules() {
+    public List<RuleResult> fireRules() throws InterpretException {
 
         List<RuleResult> results = new ArrayList<>();
         List<RuleStructure> ruleSet = new ArrayList<>(rules.values());
@@ -86,7 +87,7 @@ public class RestRuleEngine {
 
         for (RuleStructure rule : ruleSet) {
 
-            Boolean result = textualRuleEngine.evaluate(rule.rule, rule.typeBinding, rule.dataRow);
+            Boolean result = dvareRuleEngine.evaluate();
             RuleResult ruleResult = new RuleResult();
             ruleResult.setRule(rule.rule);
             ruleResult.setRuleName(rule.name);

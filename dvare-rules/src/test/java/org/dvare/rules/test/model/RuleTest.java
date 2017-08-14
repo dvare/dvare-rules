@@ -21,55 +21,36 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 
-package org.dvare.rules.test;
+package org.dvare.rules.test.model;
+
+import org.dvare.api.RuleEngineBuilder;
+import org.dvare.exceptions.IllegalRuleException;
+import org.dvare.ruleengine.RuleEngine;
+import org.dvare.rules.test.rule.BasicRule;
+import org.dvare.rules.test.rule.DvareRule;
+import org.junit.Test;
+
+public class RuleTest {
+    @Test
+    public void ageTest() throws IllegalRuleException {
+
+        RuleEngine ruleEngine = new RuleEngineBuilder().build();
+
+        BasicRule basicRule = new BasicRule();
+        ruleEngine.registerRule(basicRule);
 
 
-import org.apache.log4j.Logger;
-import org.dvare.annotations.*;
-import org.dvare.ruleengine.TextualRuleEngine;
-import org.dvare.rules.test.model.Person;
-
-@Rule(name = "textRule", priority = 0)
-public class AnnotatedTextualRuleTest {
-    Logger logger = Logger.getLogger(AnnotatedTextualRuleTest.class);
-
-    private String rule;
-    private Person person;
-
-    @Condition(type = ConditionType.TEXT)
-    public void condition(TextualRuleEngine textualRuleEngine) {
-        textualRuleEngine.register(rule, Person.class, person);
-    }
+        Person person = new Person();
+        person.setAge(25);
 
 
-    @Before
-    public void beforeCondition() {
-        logger.info("Before Condition ");
-    }
+        DvareRule textualRule = new DvareRule();
+        textualRule.setRule("age between [ 20 , 30 ]");
+        textualRule.setPerson(person);
+        ruleEngine.registerRule(textualRule);
 
-    @After
-    public void afterCondition() {
-        logger.info("After Condition ");
-
-    }
+        ruleEngine.fireRules();
 
 
-    @Success
-    public void success() {
-        logger.info("Rule Successfully Run");
-    }
-
-    @Fail
-    public void fail() {
-        logger.error("Rule Failed");
-    }
-
-
-    public void setRule(String rule) {
-        this.rule = rule;
-    }
-
-    public void setPerson(Person person) {
-        this.person = person;
     }
 }

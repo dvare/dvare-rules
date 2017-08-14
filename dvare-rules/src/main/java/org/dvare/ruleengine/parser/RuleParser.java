@@ -26,8 +26,8 @@ package org.dvare.ruleengine.parser;
 import org.apache.commons.lang3.reflect.MethodUtils;
 import org.dvare.annotations.ConditionType;
 import org.dvare.rule.BasicRule;
-import org.dvare.rule.TextualRule;
-import org.dvare.ruleengine.TextualRuleEngine;
+import org.dvare.rule.DvareRule;
+import org.dvare.ruleengine.DvareRuleEngine;
 import org.dvare.ruleengine.structure.ConditionStructure;
 import org.dvare.ruleengine.structure.MethodStructure;
 import org.dvare.ruleengine.structure.RuleStructure;
@@ -78,11 +78,11 @@ public class RuleParser {
                 conditionStructure.conditionType = ConditionType.CODE;
                 conditionStructure.condition = condition;
                 ruleStructure.conditions.add(conditionStructure);
-            } else if (rule instanceof TextualRule) {
-                Method condition = MethodUtils.getAccessibleMethod(rule.getClass(), "condition", new Class[]{TextualRuleEngine.class});
+            } else if (rule instanceof DvareRule) {
+                Method condition = MethodUtils.getAccessibleMethod(rule.getClass(), "condition", new Class[]{DvareRuleEngine.class});
                 ConditionStructure conditionStructure = new ConditionStructure();
                 conditionStructure.order = 0;
-                conditionStructure.conditionType = ConditionType.TEXT;
+                conditionStructure.conditionType = ConditionType.DVARE;
                 conditionStructure.condition = condition;
                 ruleStructure.conditions.add(conditionStructure);
             }

@@ -1,12 +1,11 @@
-package org.dvare.rules.test;
+package org.dvare.rules.test.rule;
 
 
 import org.apache.log4j.Logger;
-import org.dvare.rule.BasicRule;
 
-public class BasicRuleTest implements BasicRule {
+public class BasicRule implements org.dvare.rule.BasicRule {
 
-    Logger logger = Logger.getLogger(BasicRuleTest.class);
+    private static Logger logger = Logger.getLogger(BasicRule.class);
 
     @Override
     public String getName() {

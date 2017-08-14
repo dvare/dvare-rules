@@ -61,4 +61,6 @@ public class RuleResult {
     public void setResult(boolean result) {
         this.result = result;
     }
+
+
 }

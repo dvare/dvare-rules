@@ -21,28 +21,50 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 
-package org.dvare.rule;
+package org.dvare.rules.test.rule;
 
+import org.apache.log4j.Logger;
+import org.dvare.annotations.*;
 
-import org.dvare.ruleengine.TextualRuleEngine;
+@Rule(name = "firstRule", priority = 0)
+public class AnnotatedRule {
+    Logger logger = Logger.getLogger(AnnotatedRule.class);
+    private Integer age;
 
-public interface TextualRule {
+    @Condition(type = ConditionType.CODE)
+    public Boolean condition() {
 
-    public String getName();
-
-    public default int priority() {
-        return 0;
+        return age > 20 && age < 30;
     }
 
-    public default void before() {
+    @Before
+    public void beforeCondition() {
+        logger.info("Before Condition ");
     }
 
-    public void condition(TextualRuleEngine textualRuleEngine);
+    @After
+    public void afterCondition() {
+        logger.info("After Condition ");
 
-    public default void after() {
     }
 
-    public void success();
 
-    public void fail();
+    @Success
+    public void success() {
+        logger.info("Rule Successfully Run");
+    }
+
+    @Fail
+    public void fail() {
+        logger.error("Rule Failed");
+    }
+
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
 }
