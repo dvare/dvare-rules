@@ -24,8 +24,8 @@ In order to use snapshot versions, you need to add the following maven repositor
             <artifactId>dvare-rules</artifactId>
             <version>1.1</version>
         </dependency>              
-<dependencies>```
-
+<dependencies>
+ ```
 
 ## Example
 
