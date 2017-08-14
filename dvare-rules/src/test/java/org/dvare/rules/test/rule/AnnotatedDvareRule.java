@@ -26,7 +26,10 @@ package org.dvare.rules.test.rule;
 
 import org.apache.log4j.Logger;
 import org.dvare.annotations.*;
+import org.dvare.api.RuleEngineBuilder;
+import org.dvare.exceptions.IllegalRuleException;
 import org.dvare.ruleengine.DvareRuleEngine;
+import org.dvare.ruleengine.RuleEngine;
 import org.dvare.rules.test.model.Person;
 
 @Rule(name = "Annotated Dvare Rule")
@@ -71,5 +74,23 @@ public class AnnotatedDvareRule {
 
     public void setPerson(Person person) {
         this.person = person;
+    }
+
+
+    public static void main(String args) throws IllegalRuleException {
+        RuleEngine ruleEngine = new RuleEngineBuilder().build();
+
+        Person male = new Person();
+        male.setAge(25);
+        male.setGender("Male");
+        male.setTitle("Mr");
+
+        AnnotatedDvareRule dvareRule = new AnnotatedDvareRule();
+        dvareRule.setRule("age between [ 20 , 30 ] And title = 'Mr' And gender = 'Male'");
+        dvareRule.setPerson(male);
+
+        ruleEngine.registerRule(dvareRule);
+        ruleEngine.fireRules();
+        boolean result = ruleEngine.getResult(dvareRule).getResult();
     }
 }

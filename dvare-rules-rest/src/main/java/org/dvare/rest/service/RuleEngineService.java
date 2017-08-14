@@ -24,6 +24,7 @@ THE SOFTWARE.*/
 package org.dvare.rest.service;
 
 
+import org.dvare.exceptions.interpreter.InterpretException;
 import org.dvare.rest.registry.RuleEngineRegistry;
 import org.dvare.rest.resource.RuleResult;
 import org.dvare.rest.ruleengine.RestRuleEngine;
@@ -33,14 +34,14 @@ import java.util.List;
 
 public class RuleEngineService {
 
-    RuleEngineRegistry ruleEngineRegistry = null;
+    private RuleEngineRegistry ruleEngineRegistry = null;
 
     public RuleEngineService(RuleEngineRegistry ruleEngineRegistry) {
         this.ruleEngineRegistry = ruleEngineRegistry;
     }
 
 
-    public List<RuleResult> fireRules(final String ruleEngine) {
+    public List<RuleResult> fireRules(final String ruleEngine) throws InterpretException {
 
         RestRuleEngine restRuleEngine = ruleEngineRegistry.getRuleEngine(ruleEngine);
         if (restRuleEngine != null) {

@@ -24,6 +24,7 @@ THE SOFTWARE.*/
 package org.dvare.rest.resource;
 
 
+import org.dvare.exceptions.interpreter.InterpretException;
 import org.dvare.rest.registry.RuleEngineRegistry;
 import org.dvare.rest.service.RuleEngineService;
 import org.json.JSONArray;
@@ -120,7 +121,7 @@ public class RuleEngineResource {
 
     @GET
     @Path("{ruleEngine}/fire")
-    public Response fireRules(@PathParam("ruleEngine") final String ruleEngine, @Context HttpServletRequest request, @Context UriInfo uriInfo) {
+    public Response fireRules(@PathParam("ruleEngine") final String ruleEngine, @Context HttpServletRequest request, @Context UriInfo uriInfo) throws InterpretException {
         HttpSession session = request.getSession();
         RuleEngineRegistry registry = (RuleEngineRegistry) session.getAttribute("registry");
         if (registry != null) {
