@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+
+    <util:map id="facts-map" map-class="java.util.HashMap">
+        <entry key="name" value="pojoRule"/>
+    </util:map>
+
+    <bean class="org.dvare.api.Facts" id="facts">
+        <constructor-arg ref="facts-map"/>
+    </bean>
+
+    <bean id="ruleEngine" class="org.dvare.spring.RulesEngineFactoryBean">
+        <property name="satisfyCondition" value="0"/> <!-- 0 for ANY 1 ALL-->
+        <property name="stopOnFail" value="false"/>
+        <property name="facts" ref="facts"/>
+    </bean>
+</beans>

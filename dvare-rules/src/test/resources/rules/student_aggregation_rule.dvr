@@ -1,3 +1,0 @@
-result.age = student.age->mean ()
-result.sgpa = student.sgpa->median()
-result.count = student.name->length()

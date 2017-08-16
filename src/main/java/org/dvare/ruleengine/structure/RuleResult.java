@@ -1,29 +1,4 @@
-## Dvare Rules 
-A Light weight Java business rule engine..[https://dvare.org/](https://dvare.org/)
-
-
-## Current version
-
-* The current stable version is `1.1` : [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.dvare/dvare-rules/badge.svg?style=flat)](http://search.maven.org/#artifactdetails|org.dvare|dvare-rules|1.1|)
-
- Maven dependency:
- 
-```xml
-<dependencies>
-        <dependency>
-            <groupId>org.dvare</groupId>
-            <artifactId>dvare-rules</artifactId>
-            <version>1.1</version>
-        </dependency>              
-</dependencies>
- ```
-
-
-## License
-Dvare rules  is released under the [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](http://opensource.org/licenses/MIT).
-
-```
-The MIT License (MIT)
+/*The MIT License (MIT)
 
 Copyright (c) 2016-2017 DVARE (Data Validation and Aggregation Rule Engine)
 
@@ -43,5 +18,56 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-```
+THE SOFTWARE.*/
+
+
+package org.dvare.ruleengine.structure;
+
+
+import org.dvare.binding.data.InstancesBinding;
+
+public class RuleResult {
+    private String ruleId;
+    private Object rule;
+    private Boolean result;
+    private InstancesBinding aggregationResult;
+
+    public Object getObject(String name) {
+        return aggregationResult.getInstance(name);
+    }
+
+
+    /*getter and setters*/
+
+    public String getRuleId() {
+        return ruleId;
+    }
+
+    public void setRuleId(String ruleId) {
+        this.ruleId = ruleId;
+    }
+
+    public Object getRule() {
+        return rule;
+    }
+
+    public void setRule(Object rule) {
+        this.rule = rule;
+    }
+
+    public Boolean getResult() {
+        return result;
+    }
+
+    public void setResult(Boolean result) {
+        this.result = result;
+    }
+
+    public InstancesBinding getAggregationResult() {
+        return aggregationResult;
+    }
+
+    public void setAggregationResult(InstancesBinding aggregationResult) {
+        this.aggregationResult = aggregationResult;
+    }
+}

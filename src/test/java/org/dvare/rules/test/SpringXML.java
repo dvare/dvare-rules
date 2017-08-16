@@ -1,29 +1,4 @@
-## Dvare Rules 
-A Light weight Java business rule engine..[https://dvare.org/](https://dvare.org/)
-
-
-## Current version
-
-* The current stable version is `1.1` : [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.dvare/dvare-rules/badge.svg?style=flat)](http://search.maven.org/#artifactdetails|org.dvare|dvare-rules|1.1|)
-
- Maven dependency:
- 
-```xml
-<dependencies>
-        <dependency>
-            <groupId>org.dvare</groupId>
-            <artifactId>dvare-rules</artifactId>
-            <version>1.1</version>
-        </dependency>              
-</dependencies>
- ```
-
-
-## License
-Dvare rules  is released under the [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](http://opensource.org/licenses/MIT).
-
-```
-The MIT License (MIT)
+/*The MIT License (MIT)
 
 Copyright (c) 2016-2017 DVARE (Data Validation and Aggregation Rule Engine)
 
@@ -43,5 +18,33 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-```
+THE SOFTWARE.*/
+
+
+package org.dvare.rules.test;
+
+
+import org.dvare.exceptions.IllegalRuleException;
+import org.dvare.ruleengine.RuleEngine;
+import org.dvare.rules.test.rule.PojoRule;
+import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class SpringXML {
+
+    @Test
+    public void testApp() throws IllegalRuleException {
+
+
+        ApplicationContext context =
+                new ClassPathXmlApplicationContext("application-context.xml");
+        RuleEngine ruleEngine = context.getBean(RuleEngine.class);
+
+        PojoRule ruleTest = new PojoRule();
+        ruleEngine.registerRule(ruleTest);
+
+        ruleEngine.fireRules();
+    }
+
+}
