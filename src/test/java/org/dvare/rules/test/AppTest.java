@@ -29,7 +29,7 @@ import org.junit.runners.Suite;
 
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({RuleTest.class, AnnotatedTest.class})
+@Suite.SuiteClasses({RuleTest.class, AnnotatedTest.class, SpringXML.class})
 public class AppTest {
 
 

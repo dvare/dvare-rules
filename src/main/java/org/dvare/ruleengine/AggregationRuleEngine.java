@@ -36,6 +36,7 @@ import org.dvare.expression.Expression;
 
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 
 public class AggregationRuleEngine {
     private Logger logger = Logger.getLogger(AggregationRuleEngine.class);
@@ -48,7 +49,7 @@ public class AggregationRuleEngine {
 
 
     public Object register(File rule, ContextsBinding contextsBinding, InstancesBinding instancesBinding)
-            throws IllegalRuleException {
+            throws Exception {
 
 
         if (!rule.exists()) {
@@ -65,7 +66,7 @@ public class AggregationRuleEngine {
             }
 
             return register(ruleBuilder.toString(), contextsBinding, instancesBinding);
-        } catch (Exception e) {
+        } catch (IOException e) {
             logger.error(e.getMessage(), e);
         }
 
@@ -80,7 +81,7 @@ public class AggregationRuleEngine {
     }
 
 
-    public InstancesBinding evaluate(RuleBinding ruleBinding, InstancesBinding instancesBinding) throws InterpretException {
+    private InstancesBinding evaluate(RuleBinding ruleBinding, InstancesBinding instancesBinding) throws InterpretException {
         configuration.getEvaluator().aggregate(ruleBinding, instancesBinding);
         return instancesBinding;
     }

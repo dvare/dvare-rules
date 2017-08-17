@@ -26,7 +26,6 @@ package org.dvare.rules.test.rule;
 
 import org.apache.log4j.Logger;
 import org.dvare.annotations.RuleEngineType;
-import org.dvare.exceptions.interpreter.InterpretException;
 import org.dvare.ruleengine.DvareRuleEngine;
 import org.dvare.rules.test.model.Person;
 
@@ -44,7 +43,7 @@ public class DvareRule implements org.dvare.rule.DvareRule {
 
 
     @Override
-    public boolean condition(@RuleEngineType DvareRuleEngine dvareRuleEngine) throws InterpretException {
+    public boolean condition(@RuleEngineType DvareRuleEngine dvareRuleEngine) throws Exception {
         return dvareRuleEngine.register(rule, Person.class, person);
 
     }

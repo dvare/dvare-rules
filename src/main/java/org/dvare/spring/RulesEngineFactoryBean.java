@@ -25,7 +25,6 @@ package org.dvare.spring;
 
 
 import org.apache.log4j.Logger;
-import org.dvare.api.Facts;
 import org.dvare.api.RuleEngineBuilder;
 import org.dvare.exceptions.IllegalRuleException;
 import org.dvare.ruleengine.RuleEngine;
@@ -39,7 +38,6 @@ public class RulesEngineFactoryBean implements FactoryBean<RuleEngine> {
     private String[] functionPackages;
     private Integer satisfyCondition = 0;
     private Boolean stopOnFail = false;
-    private Facts facts;
     private List<Object> rules = new ArrayList<>();
 
     @Override
@@ -48,7 +46,7 @@ public class RulesEngineFactoryBean implements FactoryBean<RuleEngine> {
         ruleEngineBuilder.functionPackages(functionPackages);
         ruleEngineBuilder.satisfyCondition(satisfyCondition);
         ruleEngineBuilder.stopOnFail(false);
-        ruleEngineBuilder.facts(facts);
+
         RuleEngine ruleEngine = ruleEngineBuilder.build();
         registerRules(ruleEngine);
         return ruleEngine;
@@ -108,11 +106,5 @@ public class RulesEngineFactoryBean implements FactoryBean<RuleEngine> {
         this.rules = rules;
     }
 
-    public Facts getFacts() {
-        return facts;
-    }
 
-    public void setFacts(Facts facts) {
-        this.facts = facts;
-    }
 }

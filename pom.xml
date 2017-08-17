@@ -11,6 +11,7 @@
     <name>dvare rules</name>
     <url>http://dvare.org</url>
 
+    <description>A Light weight Java business rule engine.</description>
     <developers>
         <developer>
             <id>hammadirshad</id>

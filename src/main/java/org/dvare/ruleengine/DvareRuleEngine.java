@@ -31,26 +31,24 @@ import org.dvare.binding.rule.RuleBinding;
 import org.dvare.config.RuleConfiguration;
 import org.dvare.exceptions.IllegalRuleException;
 import org.dvare.exceptions.interpreter.InterpretException;
+import org.dvare.exceptions.parser.ExpressionParseException;
 import org.dvare.expression.Expression;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
 
 public class DvareRuleEngine {
 
     private static Logger logger = Logger.getLogger(DvareRuleEngine.class);
     private RuleConfiguration configuration;
-    private RuleBinding ruleBinding;
-    private InstancesBinding instancesBinding = new InstancesBinding();
-    private ContextsBinding contextsBinding = new ContextsBinding();
+
 
     public DvareRuleEngine(RuleConfiguration configuration) {
         this.configuration = configuration;
     }
 
-    public boolean register(File rule, Class type, Object object) throws IllegalRuleException, InterpretException, IOException {
+    public boolean register(File rule, Class type, Object object) throws Exception {
 
         if (!rule.exists()) {
             throw new IllegalRuleException("Rule File " + rule.getName() + " not exists.");
@@ -72,28 +70,28 @@ public class DvareRuleEngine {
     }
 
 
-    public boolean register(String rule, Class type, Object data) throws InterpretException {
+    public boolean register(String rule, Class type, Object data) throws InterpretException, ExpressionParseException {
+        ContextsBinding contextsBinding = new ContextsBinding();
+        InstancesBinding instancesBinding = new InstancesBinding();
         contextsBinding.addContext("self", type);
         instancesBinding.addInstance("self", data);
-        return registerRule(rule, contextsBinding);
+        return registerRule(rule, contextsBinding, instancesBinding);
     }
 
-    private boolean registerRule(String rule, ContextsBinding typeBinding) throws InterpretException {
-        try {
+    public boolean registerRule(String rule, ContextsBinding typeBinding, InstancesBinding instancesBinding)
+            throws InterpretException, ExpressionParseException {
 
 
             Expression expression = configuration.getParser().fromString(rule, typeBinding);
-            ruleBinding = new RuleBinding(expression);
+        RuleBinding ruleBinding = new RuleBinding(expression);
             ruleBinding.setRawExpression(rule);
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-        }
 
-        return evaluate();
+
+        return evaluate(ruleBinding, instancesBinding);
     }
 
 
-    public boolean evaluate() throws InterpretException {
+    private boolean evaluate(RuleBinding ruleBinding, InstancesBinding instancesBinding) throws InterpretException {
         Object result = configuration.getEvaluator().evaluate(ruleBinding, instancesBinding);
         if (result instanceof Boolean) {
             return (Boolean) result;

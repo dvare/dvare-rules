@@ -26,13 +26,10 @@ package org.dvare.rules.test.rule;
 
 import org.apache.log4j.Logger;
 import org.dvare.annotations.*;
-import org.dvare.exceptions.IllegalRuleException;
-import org.dvare.exceptions.interpreter.InterpretException;
 import org.dvare.ruleengine.DvareRuleEngine;
 import org.dvare.rules.test.model.Person;
 
 import java.io.File;
-import java.io.IOException;
 
 @Rule(name = "Annotated Rule File ", priority = 0)
 public class AnnotatedRuleFile {
@@ -40,7 +37,7 @@ public class AnnotatedRuleFile {
 
     @Condition
     public boolean condition(@Fact("rule") File rule, @Fact("person") Person person,
-                             @RuleEngineType DvareRuleEngine textualRuleEngine) throws IllegalRuleException, InterpretException, IOException {
+                             @RuleEngineType DvareRuleEngine textualRuleEngine) throws Exception {
         return textualRuleEngine.register(rule, Person.class, person);
     }
 

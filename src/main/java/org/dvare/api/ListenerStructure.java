@@ -21,32 +21,32 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 
-package org.dvare.ruleengine.structure;
+package org.dvare.api;
 
 import java.lang.reflect.Method;
 
-public class MethodStructure implements Comparable<MethodStructure> {
-    private Method method;
-    private Integer order;
+public class ListenerStructure implements Comparable<ListenerStructure> {
+    private Method listener;
+    private int order;
 
     @Override
-    public int compareTo(MethodStructure other) {
-        return this.order.compareTo(other.order);
+    public int compareTo(ListenerStructure other) {
+        return Integer.compare(this.order, other.order);
     }
 
-    public Method getMethod() {
-        return method;
+    public Method getListener() {
+        return listener;
     }
 
-    public void setMethod(Method method) {
-        this.method = method;
+    public void setListener(Method listener) {
+        this.listener = listener;
     }
 
-    public Integer getOrder() {
+    public int getOrder() {
         return order;
     }
 
-    public void setOrder(Integer order) {
+    public void setOrder(int order) {
         this.order = order;
     }
 }

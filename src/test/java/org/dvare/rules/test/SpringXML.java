@@ -24,6 +24,7 @@ THE SOFTWARE.*/
 package org.dvare.rules.test;
 
 
+import org.dvare.api.Facts;
 import org.dvare.exceptions.IllegalRuleException;
 import org.dvare.ruleengine.RuleEngine;
 import org.dvare.rules.test.rule.PojoRule;
@@ -44,7 +45,10 @@ public class SpringXML {
         PojoRule ruleTest = new PojoRule();
         ruleEngine.registerRule(ruleTest);
 
-        ruleEngine.fireRules();
+        Facts facts = new Facts();
+        facts.add("name", "pojoRule");
+
+        ruleEngine.fireRules(facts);
     }
 
 }

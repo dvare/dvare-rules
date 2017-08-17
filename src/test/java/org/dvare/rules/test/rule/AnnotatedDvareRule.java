@@ -29,7 +29,6 @@ import org.dvare.annotations.*;
 import org.dvare.api.Facts;
 import org.dvare.api.RuleEngineBuilder;
 import org.dvare.exceptions.IllegalRuleException;
-import org.dvare.exceptions.interpreter.InterpretException;
 import org.dvare.ruleengine.DvareRuleEngine;
 import org.dvare.ruleengine.RuleEngine;
 import org.dvare.rules.test.model.Person;
@@ -48,12 +47,12 @@ public class AnnotatedDvareRule {
         Facts facts = new Facts();
         facts.add("rule", "age between [ 20 , 30 ] And title = 'Mr' And gender = 'Male'");
         facts.add("person", male);
-        RuleEngine ruleEngine = new RuleEngineBuilder().facts(facts).build();
+        RuleEngine ruleEngine = new RuleEngineBuilder().build();
 
         AnnotatedDvareRule dvareRule = new AnnotatedDvareRule();
 
         ruleEngine.registerRule(dvareRule);
-        ruleEngine.fireRules();
+        ruleEngine.fireRules(facts);
         boolean result = ruleEngine.getResult(dvareRule).getResult();
         System.out.println(result);
     }
@@ -82,7 +81,7 @@ public class AnnotatedDvareRule {
 
     @Condition
     public boolean condition(@Fact("rule") String rule, @Fact("person")
-            Person person, @RuleEngineType DvareRuleEngine textualRuleEngine) throws InterpretException {
+            Person person, @RuleEngineType DvareRuleEngine textualRuleEngine) throws Exception {
         return textualRuleEngine.register(rule, Person.class, person);
     }
 }

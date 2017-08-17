@@ -24,24 +24,14 @@ THE SOFTWARE.*/
 package org.dvare.ruleengine;
 
 import org.apache.log4j.Logger;
-import org.dvare.annotations.Fact;
-import org.dvare.annotations.Rule;
-import org.dvare.annotations.RuleEngineType;
-import org.dvare.api.BasicRule;
 import org.dvare.api.Facts;
+import org.dvare.api.RuleResult;
+import org.dvare.api.RuleStructure;
 import org.dvare.binding.data.InstancesBinding;
 import org.dvare.exceptions.IllegalRuleException;
-import org.dvare.exceptions.interpreter.InterpretException;
-import org.dvare.rule.DvareRule;
-import org.dvare.ruleengine.parser.AnnotatedRuleParser;
 import org.dvare.ruleengine.parser.RuleParser;
-import org.dvare.ruleengine.structure.MethodStructure;
-import org.dvare.ruleengine.structure.RuleResult;
-import org.dvare.ruleengine.structure.RuleStructure;
 
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
 import java.util.*;
 
 /**
@@ -51,23 +41,15 @@ import java.util.*;
  * @version 1.0
  * @since 2016-08-20
  */
-public class RuleEngine {
+public class RuleEngine extends ListenerRuleEngine {
     private static Logger logger = Logger.getLogger(RuleEngine.class);
 
-    private Integer satisfyCondition = 0;
-    private Boolean stopOnFail = false;
-    private DvareRuleEngine textualRuleEngine;
-    private AggregationRuleEngine aggregationRuleEngine;
-    private Facts facts;
+
     private List<RuleResult> ruleResults;
     private Map<String, RuleStructure> rules = new HashMap<>();
 
-    public RuleEngine(Facts facts, DvareRuleEngine textualRuleEngine, AggregationRuleEngine aggregationRuleEngine) {
-        if (facts != null) {
-            this.facts = facts;
-        } else {
-            this.facts = new Facts();
-        }
+    public RuleEngine(DvareRuleEngine textualRuleEngine, AggregationRuleEngine aggregationRuleEngine) {
+
         this.textualRuleEngine = textualRuleEngine;
         this.aggregationRuleEngine = aggregationRuleEngine;
     }
@@ -92,24 +74,11 @@ public class RuleEngine {
         }
 
 
-        RuleStructure ruleStructure;
+        RuleStructure ruleStructure = RuleParser.parseRule(rule, rules.size());
 
-        if (rule.getClass().isAnnotationPresent(Rule.class)) {
-            AnnotatedRuleParser annotatedRuleParser = new AnnotatedRuleParser();
-            annotatedRuleParser.validateRule(rule);
-            ruleStructure = annotatedRuleParser.parseRule(rule, rules.values().size());
+        rules.put(ruleStructure.getId(), ruleStructure);
 
-        } else if (rule instanceof BasicRule || rule instanceof DvareRule) {
-
-            ruleStructure = new RuleParser().parseRule(rule, rules.values().size());
-
-        } else {
-            throw new IllegalRuleException("Passed Rule Must be Annotated with @Rule or implement BasicRule or TextualRule");
-        }
-
-        rules.put(ruleStructure.getRuleId(), ruleStructure);
-
-        return ruleStructure.getRuleId();
+        return ruleStructure.getId();
     }
 
 
@@ -159,9 +128,8 @@ public class RuleEngine {
     /**
      * The fireRules trigger all registered rules.
      *
-     * @return Map  of ruleId and RuleBinding Result
      */
-    public Map<String, Boolean> fireRules() {
+    public void fireRules(Facts facts) {
         ruleResults = new ArrayList<>();
 
         List<RuleStructure> ruleSet = new ArrayList<>(rules.values());
@@ -169,7 +137,7 @@ public class RuleEngine {
 
         for (RuleStructure ruleStructure : ruleSet) {
 
-            RuleResult ruleResult = triggerRule(ruleStructure);
+            RuleResult ruleResult = triggerRule(ruleStructure, facts);
             ruleResults.add(ruleResult);
             if (stopOnFail && !ruleResult.getResult()) {
                 break;
@@ -177,12 +145,6 @@ public class RuleEngine {
 
         }
 
-        Map<String, Boolean> result = new HashMap<>();
-        for (RuleResult ruleResult : ruleResults) {
-            result.put(ruleResult.getRuleId(), ruleResult.getResult());
-        }
-
-        return result;
 
     }
 
@@ -228,26 +190,26 @@ public class RuleEngine {
      * @param ruleStructure rule Structure
      * @return RuleResult Rule Binding Engine Detail Result
      */
-    private RuleResult triggerRule(RuleStructure ruleStructure) {
+    private RuleResult triggerRule(RuleStructure ruleStructure, Facts facts) {
 
         RuleResult ruleResult = new RuleResult();
-        ruleResult.setRuleId(ruleStructure.getRuleId());
+        ruleResult.setRuleId(ruleStructure.getId());
         ruleResult.setRule(ruleStructure.getRule());
 
         try {
             //trigger Condition
-            boolean result = triggerConditions(ruleStructure.getBeforeMethods(),
-                    ruleStructure.getConditions(), ruleStructure.getAfterMethods(), ruleStructure.getRule());
+            boolean result = triggerConditions(ruleStructure.getBeforeListeners(),
+                    ruleStructure.getConditions(), ruleStructure.getAfterListeners(), ruleStructure.getRule(), facts);
 
 
             ruleResult.setResult(result);
 
             //trigger success and fail Listener
-            triggerListener(ruleStructure, result);
+            triggerListeners(ruleStructure, result);
 
             //trigger aggregation
             if (ruleStructure.getAggregation() != null) {
-                InstancesBinding instancesBinding = triggerAggregation(ruleStructure.getAggregation(), ruleStructure.getRule());
+                InstancesBinding instancesBinding = triggerAggregation(ruleStructure.getAggregation(), ruleStructure.getRule(), facts);
                 ruleResult.setAggregationResult(instancesBinding);
             }
 
@@ -269,167 +231,7 @@ public class RuleEngine {
     }
 
 
-    /**
-     * trigger condition methods
-     *
-     * @param afterMethods before Methods
-     * @param rule         rule Instance
-     */
-    private boolean triggerConditions(List<MethodStructure> beforeMethods, List<MethodStructure> conditions,
-                                      List<MethodStructure> afterMethods, Object rule)
-            throws IllegalAccessException, InvocationTargetException {
 
-
-        Collections.sort(conditions);
-
-        List<Boolean> results = new ArrayList<>();
-
-
-        for (MethodStructure conditionStructure : conditions) {
-            // before condition
-            triggerBefore(beforeMethods, rule);
-
-            //condition
-            Object conditionResult;
-
-            Method condition = conditionStructure.getMethod();
-
-            List<Object> params = new ArrayList<>();
-            for (Parameter parameter : condition.getParameters()) {
-
-                Fact fact = parameter.getAnnotation(Fact.class);
-                if (fact != null) {
-                    String factName = fact.value();
-                    Object param = facts.get(factName);
-                    params.add(param);
-
-                } else {
-
-                    RuleEngineType engineType = parameter.getAnnotation(RuleEngineType.class);
-                    if (engineType != null) {
-                        params.add(textualRuleEngine);
-
-                    }
-                }
-            }
-
-            Object args[] = params.toArray();
-            conditionResult = conditionStructure.getMethod().invoke(rule, args);
-
-
-            // after condition
-            triggerAfter(afterMethods, rule);
-
-
-            // return result
-            if (conditionResult instanceof Boolean) {
-                Boolean booleanResult = (Boolean) conditionResult;
-                results.add(booleanResult);
-            }
-        }
-
-
-        if (satisfyCondition.equals(0)) { //any match
-
-            for (Boolean result : results) {
-                if (result) return true;
-            }
-
-            return false;
-        } else if (satisfyCondition.equals(1)) {
-            for (Boolean result : results) {
-                if (!result) return false;
-            }
-            return true;
-        }
-
-
-        return true;
-
-    }
-
-
-    /**
-     * trigger before method condition
-     *
-     * @param beforeMethods before Methods
-     * @param rule          rule Instance
-     */
-    private void triggerBefore(List<MethodStructure> beforeMethods, Object rule)
-            throws IllegalAccessException, InvocationTargetException {
-        Collections.sort(beforeMethods);
-        for (MethodStructure methodStructure : beforeMethods) {
-            methodStructure.getMethod().invoke(rule);
-        }
-    }
-
-    /**
-     * trigger after method condition
-     *
-     * @param afterMethods before Methods
-     * @param rule         rule Instance
-     */
-    private void triggerAfter(List<MethodStructure> afterMethods, Object rule)
-            throws IllegalAccessException, InvocationTargetException {
-        Collections.sort(afterMethods);
-        for (MethodStructure methodStructure : afterMethods) {
-            methodStructure.getMethod().invoke(rule);
-        }
-    }
-
-
-    private InstancesBinding triggerAggregation(MethodStructure methodStructure, Object rule)
-            throws IllegalAccessException, InvocationTargetException, CloneNotSupportedException, InterpretException {
-        if (methodStructure != null) {
-
-            List<Object> params = new ArrayList<>();
-            for (Parameter parameter : methodStructure.getMethod().getParameters()) {
-                Fact fact = parameter.getAnnotation(Fact.class);
-                if (fact != null) {
-                    String factName = fact.value();
-                    Object param = facts.get(factName);
-                    params.add(param);
-                } else {
-                    RuleEngineType engineType = parameter.getAnnotation(RuleEngineType.class);
-                    if (engineType != null) {
-                        params.add(aggregationRuleEngine);
-                    }
-                }
-            }
-
-            Object args[] = params.toArray();
-
-            Object instance = methodStructure.getMethod().invoke(rule, args);
-
-            if (instance instanceof InstancesBinding) {
-                return (InstancesBinding) instance;
-            }
-
-        }
-        return null;
-    }
-
-
-    private void triggerListener(RuleStructure rule, Boolean result)
-            throws IllegalAccessException, InvocationTargetException {
-
-        if (result) {
-            List<MethodStructure> successMethods = rule.getSuccessMethods();
-            Collections.sort(successMethods);
-            for (MethodStructure methodStructure : successMethods) {
-                methodStructure.getMethod().invoke(rule.getRule());
-            }
-
-        } else {
-
-            List<MethodStructure> failMethods = rule.getFailMethods();
-            Collections.sort(failMethods);
-            for (MethodStructure methodStructure : failMethods) {
-                methodStructure.getMethod().invoke(rule.getRule());
-            }
-        }
-
-    }
 
     /* setters */
 

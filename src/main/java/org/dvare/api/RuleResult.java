@@ -21,39 +21,53 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 
-package org.dvare.rules.test;
-
-import org.dvare.api.RuleEngineBuilder;
-import org.dvare.exceptions.IllegalRuleException;
-import org.dvare.ruleengine.RuleEngine;
-import org.dvare.rules.test.model.Person;
-import org.dvare.rules.test.rule.BasicRule;
-import org.dvare.rules.test.rule.DvareRule;
-import org.junit.Assert;
-import org.junit.Test;
-
-public class RuleTest {
-    @Test
-    public void ageTest() throws IllegalRuleException {
-
-        RuleEngine ruleEngine = new RuleEngineBuilder().build();
-
-        BasicRule basicRule = new BasicRule();
-        ruleEngine.registerRule(basicRule);
+package org.dvare.api;
 
 
-        Person person = new Person();
-        person.setAge(25);
+import org.dvare.binding.data.InstancesBinding;
+
+public class RuleResult {
+    private String ruleId;
+    private Object rule;
+    private boolean result;
+    private InstancesBinding aggregationResult;
+
+    public Object getObject(String name) {
+        return aggregationResult.getInstance(name);
+    }
 
 
-        DvareRule dvareRule = new DvareRule();
-        dvareRule.setRule("age between [ 20 , 30 ]");
-        dvareRule.setPerson(person);
-        ruleEngine.registerRule(dvareRule);
+    /*getter and setters*/
 
-        ruleEngine.fireRules(null);
+    public String getRuleId() {
+        return ruleId;
+    }
 
-        Assert.assertTrue(ruleEngine.getResult(dvareRule).getResult());
+    public void setRuleId(String ruleId) {
+        this.ruleId = ruleId;
+    }
 
+    public Object getRule() {
+        return rule;
+    }
+
+    public void setRule(Object rule) {
+        this.rule = rule;
+    }
+
+    public boolean getResult() {
+        return result;
+    }
+
+    public void setResult(boolean result) {
+        this.result = result;
+    }
+
+    public InstancesBinding getAggregationResult() {
+        return aggregationResult;
+    }
+
+    public void setAggregationResult(InstancesBinding aggregationResult) {
+        this.aggregationResult = aggregationResult;
     }
 }

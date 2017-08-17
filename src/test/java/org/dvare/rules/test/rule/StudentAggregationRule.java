@@ -27,7 +27,6 @@ import org.apache.log4j.Logger;
 import org.dvare.annotations.*;
 import org.dvare.binding.data.InstancesBinding;
 import org.dvare.binding.model.ContextsBinding;
-import org.dvare.exceptions.IllegalRuleException;
 import org.dvare.ruleengine.AggregationRuleEngine;
 import org.dvare.rules.test.model.Student;
 import org.dvare.rules.test.model.StudentAggregation;
@@ -41,7 +40,7 @@ public class StudentAggregationRule {
 
     @Aggregation
     public Object aggregation(@Fact("rule") File rule, @Fact("students") List<Student> students,
-                              @RuleEngineType AggregationRuleEngine aggregationRuleEngine) throws IllegalRuleException {
+                              @RuleEngineType AggregationRuleEngine aggregationRuleEngine) throws Exception {
 
         ContextsBinding contextsBinding = new ContextsBinding();
         contextsBinding.addContext("result", StudentAggregation.class);

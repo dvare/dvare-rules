@@ -25,9 +25,9 @@ package org.dvare.rules.test;
 
 import org.dvare.api.Facts;
 import org.dvare.api.RuleEngineBuilder;
+import org.dvare.api.RuleResult;
 import org.dvare.exceptions.IllegalRuleException;
 import org.dvare.ruleengine.RuleEngine;
-import org.dvare.ruleengine.structure.RuleResult;
 import org.dvare.rules.test.model.Person;
 import org.dvare.rules.test.model.Student;
 import org.dvare.rules.test.model.StudentAggregation;
@@ -48,14 +48,14 @@ public class AnnotatedTest {
 
         Facts facts = new Facts();
         facts.add("age", 25);
-        RuleEngine ruleEngine = new RuleEngineBuilder().facts(facts).build();
+        RuleEngine ruleEngine = new RuleEngineBuilder().build();
 
         AnnotatedRule ruleTest = new AnnotatedRule();
 
         ruleEngine.registerRule(ruleTest);
 
 
-        ruleEngine.fireRules();
+        ruleEngine.fireRules(facts);
 
         boolean result = ruleEngine.getResult(ruleTest).getResult();
         Assert.assertTrue(result);
@@ -75,14 +75,14 @@ public class AnnotatedTest {
         Facts facts = new Facts();
         facts.add("rule", "age between [ 20 , 30 ] And title = 'Mr' And gender = 'Male'");
         facts.add("person", male);
-        RuleEngine ruleEngine = new RuleEngineBuilder().facts(facts).build();
+        RuleEngine ruleEngine = new RuleEngineBuilder().build();
 
         AnnotatedDvareRule dvareRule = new AnnotatedDvareRule();
 
 
         ruleEngine.registerRule(dvareRule);
 
-        ruleEngine.fireRules();
+        ruleEngine.fireRules(facts);
 
         boolean result = ruleEngine.getResult(dvareRule).getResult();
         Assert.assertTrue(result);
@@ -101,13 +101,13 @@ public class AnnotatedTest {
         Facts facts = new Facts();
         facts.add("rule", new File("src/test/resources/rules/age_rule.dvr"));
         facts.add("person", female);
-        RuleEngine ruleEngine = new RuleEngineBuilder().facts(facts).build();
+        RuleEngine ruleEngine = new RuleEngineBuilder().build();
 
         AnnotatedRuleFile dvareRule = new AnnotatedRuleFile();
 
         ruleEngine.registerRule(dvareRule);
         String ruleId = ruleEngine.registerRule(dvareRule);
-        ruleEngine.fireRules();
+        ruleEngine.fireRules(facts);
 
         boolean result = ruleEngine.getResult(ruleId).getResult();
         Assert.assertTrue(result);
@@ -145,12 +145,12 @@ public class AnnotatedTest {
         facts.add("rule", new File("src/test/resources/rules/student_aggregation_rule.dvr"));
         facts.add("students", students);
 
-        RuleEngine ruleEngine = new RuleEngineBuilder().facts(facts).build();
+        RuleEngine ruleEngine = new RuleEngineBuilder().build();
 
         String ruleId = ruleEngine.registerRule(new StudentAggregationRule());
 
 
-        ruleEngine.fireRules();
+        ruleEngine.fireRules(facts);
 
         RuleResult result = ruleEngine.getResult(ruleId);
 

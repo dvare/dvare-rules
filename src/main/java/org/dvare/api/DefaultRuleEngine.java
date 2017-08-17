@@ -20,54 +20,30 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-
-package org.dvare.ruleengine.structure;
-
+package org.dvare.api;
 
 import org.dvare.binding.data.InstancesBinding;
+import org.dvare.exceptions.interpreter.InterpretException;
 
-public class RuleResult {
-    private String ruleId;
-    private Object rule;
-    private Boolean result;
-    private InstancesBinding aggregationResult;
+import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
-    public Object getObject(String name) {
-        return aggregationResult.getInstance(name);
-    }
+public interface DefaultRuleEngine {
+
+    boolean triggerConditions(List<ListenerStructure> beforeMethods, List<ListenerStructure> conditions,
+                              List<ListenerStructure> afterMethods, Object rule, Facts facts)
+            throws IllegalAccessException, InvocationTargetException;
 
 
-    /*getter and setters*/
+    void triggerBeforeListeners(List<ListenerStructure> beforeMethods, Object rule)
+            throws IllegalAccessException, InvocationTargetException;
 
-    public String getRuleId() {
-        return ruleId;
-    }
+    void triggerAfterListeners(List<ListenerStructure> afterMethods, Object rule)
+            throws IllegalAccessException, InvocationTargetException;
 
-    public void setRuleId(String ruleId) {
-        this.ruleId = ruleId;
-    }
+    InstancesBinding triggerAggregation(ListenerStructure methodStructure, Object rule, Facts facts)
+            throws IllegalAccessException, InvocationTargetException, InterpretException;
 
-    public Object getRule() {
-        return rule;
-    }
-
-    public void setRule(Object rule) {
-        this.rule = rule;
-    }
-
-    public Boolean getResult() {
-        return result;
-    }
-
-    public void setResult(Boolean result) {
-        this.result = result;
-    }
-
-    public InstancesBinding getAggregationResult() {
-        return aggregationResult;
-    }
-
-    public void setAggregationResult(InstancesBinding aggregationResult) {
-        this.aggregationResult = aggregationResult;
-    }
+    void triggerListeners(RuleStructure rule, Boolean result)
+            throws IllegalAccessException, InvocationTargetException;
 }
