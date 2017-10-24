@@ -31,41 +31,19 @@ In order to use snapshot versions, you need to add the following maven repositor
 ## Example
 
 ```java
-@Rule(name = "Annotated Dvare Rule")
-public class AnnotatedDvareRule {
-    private static Logger logger = Logger.getLogger(AnnotatedDvareRule.class);
-    
-    
-     public static void main(String args[]) throws IllegalRuleException {
- 
-         Person male = new Person();
-         male.setAge(25);
-         male.setGender("Male");
-         male.setTitle("Mr");
- 
-         Facts facts = new Facts();
-         facts.add("rule", "age between [ 20 , 30 ] And title = 'Mr' And gender = 'Male'");
-         facts.add("person", male);
-         RuleEngine ruleEngine = new RuleEngineBuilder().facts(facts).build();
- 
-         AnnotatedDvareRule dvareRule = new AnnotatedDvareRule();
- 
-         ruleEngine.registerRule(dvareRule);
-         ruleEngine.fireRules();
-         boolean result = ruleEngine.getResult(dvareRule).getResult();
-         System.out.println(result);
-     }   
-    
-    @Condition
-    public boolean condition(@Fact("rule") String rule, @Fact("person") 
-            Person person, @RuleEngineType DvareRuleEngine textualRuleEngine) throws InterpretException {
-        return textualRuleEngine.register(rule, Person.class, person);
-    }
-
+@Rule(name = "Dvare Rule")
+public class DvareRule {
+    private static Logger logger = Logger.getLogger(DvareRule.class);
 
     @Before
     public void beforeCondition() {
         logger.info("Before Condition ");
+    }
+    
+    @Condition
+    public boolean condition(@Fact("rule") String rule, @Fact("person")Person person,
+                   @RuleEngineType DvareRuleEngine textualRuleEngine) throws InterpretException {
+        return textualRuleEngine.register(rule, Person.class, person);
     }
 
     @After
@@ -83,10 +61,32 @@ public class AnnotatedDvareRule {
     public void fail() {
         logger.error("Rule Failed");
     }
+}  
 
 
-
-}    
+public class DvareRuleExample {
+    private static Logger logger = Logger.getLogger(DvareRule.class);
+    
+     public static void main(String args[]) throws IllegalRuleException {
+ 
+         Person male = new Person();
+         male.setAge(25);
+         male.setGender("Male");
+         male.setTitle("Mr");
+ 
+         Facts facts = new Facts();
+         facts.add("rule", "age between [ 20 , 30 ] And title = 'Mr' And gender = 'Male'");
+         facts.add("person", male);
+         RuleEngine ruleEngine = new RuleEngineBuilder().facts(facts).build();
+ 
+         DvareRule dvareRule = new DvareRule();
+ 
+         ruleEngine.registerRule(dvareRule);
+         ruleEngine.fireRules();
+         boolean result = ruleEngine.getResult(dvareRule).getResult();
+         System.out.println(result);
+     }  
+}
  ```
 
 ## License
